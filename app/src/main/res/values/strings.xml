@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Android_dev</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="third_fragment_label">Third Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="dad_jokes">Dad jokes</string>
+    <string name="chuck_norris_facts">Chuck Norris facts</string>
+
+    <string name="register">Register</string>
+    <string name="login_text">Логин:</string>
+    <string name="login_edit">Введите логин</string>
+    <string name="password_text">Пароль:</string>
+    <string name="password_edit">Введите пароль</string>
+    <string name="button_login">Login</string>
+    <string name="quality_text">Попыток:</string>
+    <string name="welcome">Welcome!!</string>
+    <string name="join">You\'re one step away from joing app</string>
+    <string name="enter">Enter your personal information</string>
+    <string name="first_name_form">First name*</string>
+    <string name="last_name_form">Last name*</string>
+    <string name="email_address">Email address*</string>
+    <string name="number_phone">000-000 0000*</string>
+    <string name="button_register">Register</string>
+    <string name="success">Success!!</string>
+</resources>
