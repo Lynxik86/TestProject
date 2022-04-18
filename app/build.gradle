@@ -46,6 +46,10 @@ kapt {
     correctErrorTypes true
 }
 
+/*kapt {
+    correctErrorTypes true
+}*/
+
 dependencies {
 
     // Kotlin components
@@ -102,4 +106,7 @@ dependencies {
     // For local unit tests
     testImplementation 'com.google.dagger:hilt-android-testing:2.41'
     testAnnotationProcessor 'com.google.dagger:hilt-compiler:2.41'
+
+    //CardView
+    implementation "androidx.cardview:cardview:1.0.0"
 }

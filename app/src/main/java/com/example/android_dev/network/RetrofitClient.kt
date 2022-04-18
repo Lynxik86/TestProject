@@ -40,5 +40,6 @@ object RetrofitClient {
 
     fun getChuckApi(): ChuckApi {
         return getRetrofit(CHUCK_BASE_URL).create(ChuckApi::class.java)
+
     }
 }

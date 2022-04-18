@@ -23,4 +23,5 @@ interface JokeApiDao {
 
     @Query("SELECT * FROM chuck_table")
     fun readAllData(): LiveData<List<JokeResult>>
+    //fun readAllData(): LiveData<List<JokeResult>>
 }

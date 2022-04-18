@@ -9,4 +9,5 @@ data class JokeResult(
     val id: String,
     val joke: String,
     val status: Int,
+    //val status: Int,
 )

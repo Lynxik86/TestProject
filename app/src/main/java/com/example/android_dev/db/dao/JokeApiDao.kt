@@ -18,4 +18,6 @@ interface JokeApiDao {
 
     @Query("DELETE FROM joke_table")
     suspend fun deleteAll()
+
+
 }

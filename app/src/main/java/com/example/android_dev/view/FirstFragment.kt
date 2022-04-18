@@ -1,6 +1,7 @@
 package com.example.android_dev.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -69,6 +70,8 @@ class FirstFragment : Fragment(), CoroutineScope {
         chuckViewModel = ViewModelProvider(this)[ChuckViewModel::class.java]
         jokesViewModel = ViewModelProvider(this)[JokeViewModel::class.java]
 
+        chuckViewModel.coroutineGetChuck(requireContext().applicationContext)
+
         // Specify layout for recycler view
         val linearLayoutManager = LinearLayoutManager(
             requireContext(), RecyclerView.VERTICAL, false
@@ -78,19 +81,10 @@ class FirstFragment : Fragment(), CoroutineScope {
 
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
         binding.buttonSecond.setOnClickListener {
-            // Итак, для чего нужны корутины? Если требуется скачать что-то из сети, извлечь данные из базы данных или просто выполнить долгие вычисления и при этом не заблокировать интерфейс пользователю, можно использовать корутины.*/
-            //запуск новой сопрограммы в фоне
-            //сопрограммы - это легковесные потоки. Они запускаются с помощью билдера сопрограмм launch в контексте некоторого CoroutineScope. В примере выше мы запускаем новую сопрограмму в GlobalScope.
-            //Это означает, что время жизни новой сопрограммы ограничено только временем жизни всего приложения.
-            //GlobalScope.launch(Dispatchers.Default) {
+         /*   chuckViewModel.chuckId.observe(viewLifecycleOwner, Observer { id ->
+                binding.textviewFirst.text = id
+            })*/
 
-            launch {
-                withContext(CoroutinesDispatchers.Default) {
-                    //Send an INFO log message.
-                    binding.textviewFirst.text =
-                        chuckViewModel.getChuck(requireContext().applicationContext).id
-                }
-            }
             chuckViewModel.allChucks.observe(viewLifecycleOwner, Observer { chucks ->
                 // Data bind the recycler view
                 binding.recyclerView.adapter = RecyclerChuckAdapter(chucks)
@@ -121,5 +115,6 @@ class FirstFragment : Fragment(), CoroutineScope {
         firstFragmentJob?.cancel()
         firstFragmentJob = null
         _binding = null
+
     }
 }

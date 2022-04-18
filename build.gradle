@@ -10,6 +10,10 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
+/*task clean(type: Delete) {
+    delete rootProject.buildDir
+}*/
+
 ext {
     roomVersion = '2.2.1'
     archLifecycleVersion = '2.2.0-rc02'

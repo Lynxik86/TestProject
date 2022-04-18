@@ -5,5 +5,6 @@ import android.app.Application
 class MyTestApplication : Application(){
     override fun onCreate() {
         super.onCreate()
+        // super.onCreate()
     }
 }

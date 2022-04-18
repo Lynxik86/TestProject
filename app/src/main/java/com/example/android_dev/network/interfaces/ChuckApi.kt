@@ -26,4 +26,5 @@ interface ChuckApiDao {
 
     @Query("SELECT * FROM chuck_table")
     fun readAllData(): LiveData<List<ChuckResult>>
+
 }

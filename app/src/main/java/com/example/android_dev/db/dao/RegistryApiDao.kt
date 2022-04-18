@@ -9,5 +9,6 @@ import com.example.android_dev.model.FormResult
 interface RegistryApiDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addRegistryData(form: FormResult)
+   /* fun addRegistryData(form: FormResult)*/
 
 }

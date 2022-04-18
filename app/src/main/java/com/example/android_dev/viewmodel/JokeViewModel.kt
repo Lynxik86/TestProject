@@ -23,5 +23,6 @@ class JokeViewModel(application: Application) : AndroidViewModel(application) {
         Log.i("JOKE", jokeResult.joke)
 
         return jokeResult
+
     }
 }

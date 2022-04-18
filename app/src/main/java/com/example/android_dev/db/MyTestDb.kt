@@ -35,12 +35,13 @@ abstract class MyTestDb : RoomDatabase() {
                         MyTestDb::class.java,
                         "app_database"
                     )
-//                    .createFromAsset("database/user.db")
+                    //.createFromAsset("database/user.db")
                     .fallbackToDestructiveMigration()
-                    .allowMainThreadQueries()
+                    //.allowMainThreadQueries()
                     .build()
                 dbInstance = instance
                 return instance
+
             }
         }
     }
