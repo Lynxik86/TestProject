@@ -31,6 +31,6 @@ class RecyclerJokeAdapter(private val jokes: List<JokeResult>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         //   h.bindItems(chuck.value!!?.get(position))
         holder.textView.text = jokes[position].joke
-        // holder.textView.text = jokes[position].joke
+
     }
 }

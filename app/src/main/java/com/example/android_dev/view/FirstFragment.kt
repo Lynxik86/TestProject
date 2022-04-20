@@ -1,12 +1,16 @@
 package com.example.android_dev.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContentProviderCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.*
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android_dev.RecyclerChuckAdapter
@@ -17,7 +21,6 @@ import com.example.android_dev.viewmodel.JokeViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.Dispatchers as CoroutinesDispatchers
 
@@ -57,7 +60,7 @@ class FirstFragment : Fragment(), CoroutineScope {
     }
 
     //вызывается после того как layout проинициализирован.тут уже привязываем логику к вьюхам.
-    // Это гарантирует что вьюха создана, и никакие null pointer'ы падать не будут.
+    // Это гарантирует что вьюха создана, и никакие null поинтеры падать не будут.
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -70,44 +73,58 @@ class FirstFragment : Fragment(), CoroutineScope {
         chuckViewModel = ViewModelProvider(this)[ChuckViewModel::class.java]
         jokesViewModel = ViewModelProvider(this)[JokeViewModel::class.java]
 
-        chuckViewModel.coroutineGetChuck(requireContext().applicationContext)
+        setupRecyclerView()
+        observeViews()
 
+        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
+        binding.buttonSecond.setOnClickListener {
+            chuckViewModel.coroutineGetChuck(requireContext().applicationContext)
+        }
+
+        binding.buttonFirst.setOnClickListener {
+            jokesViewModel.coroutineGetJoke(requireContext().applicationContext)
+
+            //запуск новой сопрограммы в фоне
+            //сопрограммы - это легковесные потоки. Они запускаются с помощью билдера сопрограмм launch в контексте некоторого CoroutineScope. В примере выше мы запускаем новую сопрограмму в GlobalScope.
+            // Это означает, что время жизни новой сопрограммы ограничено только временем жизни всего приложения.
+
+            //  chuckViewModel.coroutineGetChuck(requireContext().applicationContext)
+       /*     viewLifecycleOwner.lifecycleScope.launch {
+                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    binding.textviewFirst.text =
+                        jokesViewModel.getJokes(ContentProviderCompat.requireContext().applicationContext).joke
+                }
+            }*/
+        }
+    }
+
+    private fun setupRecyclerView(){
         // Specify layout for recycler view
         val linearLayoutManager = LinearLayoutManager(
             requireContext(), RecyclerView.VERTICAL, false
         )
 
         binding.recyclerView.layoutManager = linearLayoutManager
+    }
 
-        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        binding.buttonSecond.setOnClickListener {
-         /*   chuckViewModel.chuckId.observe(viewLifecycleOwner, Observer { id ->
-                binding.textviewFirst.text = id
-            })*/
+    private fun observeViews(){
+        jokesViewModel._jokeId.observe(viewLifecycleOwner, Observer { jokeId ->
+            binding.textviewFirst.text = jokeId
+        })
 
-            chuckViewModel.allChucks.observe(viewLifecycleOwner, Observer { chucks ->
-                // Data bind the recycler view
-                binding.recyclerView.adapter = RecyclerChuckAdapter(chucks)
-            })
-        }
+        chuckViewModel._chuckId.observe(viewLifecycleOwner, Observer { chuckId ->
+            binding.textviewFirst.text = chuckId
+        })
 
-        binding.buttonFirst.setOnClickListener {
-            //запуск новой сопрограммы в фоне
-            //сопрограммы - это легковесные потоки. Они запускаются с помощью билдера сопрограмм launch в контексте некоторого CoroutineScope. В примере выше мы запускаем новую сопрограмму в GlobalScope.
-            // Это означает, что время жизни новой сопрограммы ограничено только временем жизни всего приложения.
-            viewLifecycleOwner.lifecycleScope.launch {
-                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    binding.textviewFirst.text =
-                        jokesViewModel.getJokes(requireContext().applicationContext).joke
-                }
-            }
+        chuckViewModel.allChucks.observe(viewLifecycleOwner, Observer { chucks ->
+            // Data bind the recycler view
+            binding.recyclerView.adapter = RecyclerChuckAdapter(chucks)
+        })
 
-            jokesViewModel.allJokes.observe(viewLifecycleOwner, Observer { jokes ->
-                // Data bind the recycler view
-
-                binding.recyclerView.adapter = RecyclerJokeAdapter(jokes)
-            })
-        }
+        jokesViewModel.allJokes.observe(viewLifecycleOwner, Observer { jokes ->
+            // Data bind the recycler view
+            binding.recyclerView.adapter = RecyclerJokeAdapter(jokes)
+        })
     }
 
     override fun onDestroyView() {

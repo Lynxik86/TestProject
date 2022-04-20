@@ -7,7 +7,7 @@ import com.example.android_dev.db.MyTestDb
 import com.example.android_dev.model.FormResult
 
 class RegistryViewModel(application: Application) : AndroidViewModel(application) {
-//ggggg
+
     fun writeRegistryData(
         applicationContext: Context,
         firstname: String,
@@ -18,6 +18,6 @@ class RegistryViewModel(application: Application) : AndroidViewModel(application
         val formResult =
             FormResult(first_name = firstname, last_name = lastname, email = email, phone = phone)
         MyTestDb.getDatabase(applicationContext).formResultDao().addRegistryData(formResult)
-    // MyTestDb.getDatabase(applicationContext).formResultDao().addRegistryData(formResult)
+
     }
 }

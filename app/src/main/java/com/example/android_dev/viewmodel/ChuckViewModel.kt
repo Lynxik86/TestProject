@@ -12,17 +12,15 @@ import com.example.android_dev.model.ChuckResult
 import com.example.android_dev.network.RetrofitClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class ChuckViewModel(application: Application) : AndroidViewModel(application) {
 
     internal val allChucks: LiveData<List<ChuckResult>> =
         MyTestDb.getDatabase(application).chuckResultDao().readAllData()
 
-    internal val chuckId = MutableLiveData<String>()
-  //  val snackbarText: LiveData<String> = _snackbarText
+     var _chuckId = MutableLiveData<String>()
 
-    suspend fun getChuck(applicationContext: Context): ChuckResult {
+    private suspend fun getChuck(applicationContext: Context): ChuckResult {
         val chuckResult = RetrofitClient.getChuckApi().randomChuck()
 
         MyTestDb.getDatabase(applicationContext).chuckResultDao().addRandomChuck(chuckResult)
@@ -33,15 +31,18 @@ class ChuckViewModel(application: Application) : AndroidViewModel(application) {
 
     }
 
-    fun coroutineGetChuck (applicationContext: Context) {
+    fun coroutineGetChuck (applicationContext: Context)= viewModelScope.launch(Dispatchers.Default) {
+        _chuckId.postValue(getChuck(applicationContext).id)
+
+        //{
         // Итак, для чего нужны корутины? Если требуется скачать что-то из сети, извлечь данные из базы данных или просто выполнить долгие вычисления и при этом не заблокировать интерфейс пользователю, можно использовать корутины.*/
         //запуск новой сопрограммы в фоне
         //сопрограммы - это легковесные потоки. Они запускаются с помощью билдера сопрограмм launch в контексте некоторого CoroutineScope. В примере выше мы запускаем новую сопрограмму в GlobalScope.
         //Это означает, что время жизни новой сопрограммы ограничено только временем жизни всего приложения.
         //GlobalScope.launch(Dispatchers.Default) {
-        Log.i("1","first")
-        viewModelScope.launch {
-            chuckId.value = getChuck(applicationContext).id
+        /*Log.i("1","first")
+        viewModelScope.launch(Dispatchers.Default) {
+            chuckId.value = getChuck(applicationContext).id*/
            /* val id=
             withContext(Dispatchers.Main) {
                 Log.i("2","second")
@@ -51,10 +52,6 @@ class ChuckViewModel(application: Application) : AndroidViewModel(application) {
                 Log.i("textviewFirst", binding.textviewFirst.text.toString())
 
             }*/
-        }
-
-
-
-
+      //  }
     }
 }

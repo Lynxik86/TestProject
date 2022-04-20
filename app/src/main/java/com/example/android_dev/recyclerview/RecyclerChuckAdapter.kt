@@ -29,8 +29,8 @@ class RecyclerChuckAdapter(private val chuck: List<ChuckResult>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        //   h.bindItems(chuck.value!!?.get(position))
+
         holder.textView.text = chuck[position].id
-        //    holder.textView.text = chuck[position].id
+
     }
 }
