@@ -26,7 +26,7 @@
     <string name="first_name_form">First name*</string>
     <string name="last_name_form">Last name*</string>
     <string name="email_address">Email address*</string>
-    <string name="number_phone">000-000 0000*</string>
+    <string name="number_phone">+00-000-000 0000*</string>
     <string name="button_register">Register</string>
     <string name="success">Success!!</string>
 </resources>

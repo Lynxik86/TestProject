@@ -34,11 +34,15 @@ class ThirdFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         editData()
         registryData()
 
-        findNavController().navigate(action_ThirdFragment_to_SecondFragment)
+        binding.formRegister.setOnClickListener {
 
+            findNavController().navigate(action_ThirdFragment_to_SecondFragment)
+
+        }
     }
 
     private fun editData() {
@@ -46,31 +50,35 @@ class ThirdFragment : Fragment() {
         val firstname = Regex("^[a-zA-Z][a-zA-Z0-9]{1,10}$")
         val lastname = Regex("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#\$%^&*]{6,}$")
         val mail = Regex("^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}\$")
-        val tel = Regex("^\\+\\d{2}\\(\\d{3}\\)\\d{3}-\\d{2}-\\d{2}\$")
+        val tel = Regex("^\\+3\\d{11}$")
 
-        binding.firstNameEdit.setOnFocusChangeListener { v, hasFocus ->
-            if (hasFocus && (binding.firstNameEdit.text.matches(firstname))) {
+
+
+            binding.firstNameEdit.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus && (binding.firstNameEdit.text.matches(firstname))) {
                 binding.firstNameEdit.isEnabled = false;
             }
         }
 
         binding.lastNameEdit.setOnFocusChangeListener { v, hasFocus ->
-            if (hasFocus && (binding.lastNameEdit.text.matches(lastname))) {
+            if (!hasFocus && (binding.lastNameEdit.text.matches(lastname))) {
                 binding.lastNameEdit.isEnabled = false;
             }
         }
 
         binding.mailEdit.setOnFocusChangeListener { v, hasFocus ->
-            if (hasFocus && (binding.mailEdit.text.matches(mail))) {
+            if (!hasFocus && (binding.mailEdit.text.matches(mail))) {
                 binding.mailEdit.isEnabled = false;
             }
         }
 
         binding.poneEdit.setOnFocusChangeListener { v, hasFocus ->
-            if (hasFocus && (binding.poneEdit.text.matches(tel))) {
+            if (!hasFocus && (binding.poneEdit.text.matches(tel))) {
                 binding.poneEdit.isEnabled = false;
             }
         }
+
+
     }
 
     private fun registryData() {

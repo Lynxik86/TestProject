@@ -38,7 +38,7 @@ class SecondFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.buttonLogin.setOnClickListener {
-            if (binding.editUserLogin.text.matches(regex) && binding.editUserPassword.text.toString() == "admin") {
+            if (binding.editUserLogin.text.toString()== "admin" && binding.editUserPassword.text.toString() == "admin") {
                 Toast.makeText(
                     requireContext(),
                     "Вход выполнен!",
