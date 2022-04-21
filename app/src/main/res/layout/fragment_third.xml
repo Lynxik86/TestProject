@@ -54,6 +54,7 @@
         android:layout_marginBottom="100dp"
         android:autofillHints="First name*"
         android:hint="@string/first_name_form"
+        android:textIsSelectable="true"
         android:inputType="textNoSuggestions"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -70,6 +71,7 @@
         android:layout_marginBottom="100dp"
         android:autofillHints="Last name*"
         android:hint="@string/last_name_form"
+        android:textIsSelectable="true"
         android:inputType="textNoSuggestions"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -88,6 +90,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        android:textIsSelectable="true"
         app:layout_constraintTop_toTopOf="@+id/welcome"></EditText>
 
     <EditText
@@ -97,6 +100,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginRight="50dp"
         android:autofillHints="000-000 0000*"
+        android:textIsSelectable="true"
         android:hint="@string/number_phone"
         android:inputType="textNoSuggestions"
         android:paddingRight="120dp"
