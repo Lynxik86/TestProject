@@ -6,7 +6,7 @@ import androidx.room.OnConflictStrategy
 import com.example.android_dev.model.FormResult
 
 @Dao
-interface RegistryApiDao {
+interface RegistryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addRegistryData(form: FormResult)
    /* fun addRegistryData(form: FormResult)*/

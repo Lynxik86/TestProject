@@ -4,18 +4,18 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.android_dev.db.dao.ChuckApiDao
-import com.example.android_dev.db.dao.JokeApiDao
-import com.example.android_dev.db.dao.RegistryApiDao
+import com.example.android_dev.db.dao.ChuckDao
+import com.example.android_dev.db.dao.JokeDao
+import com.example.android_dev.db.dao.RegistryDao
 import com.example.android_dev.model.ChuckResult
 import com.example.android_dev.model.FormResult
 import com.example.android_dev.model.JokeResult
 
 @Database(entities = [(ChuckResult::class), (JokeResult::class), (FormResult::class)],  version = 3)
 abstract class MyTestDb : RoomDatabase() {
-    abstract fun jokeResultDao(): JokeApiDao
-    abstract fun chuckResultDao(): ChuckApiDao
-    abstract fun formResultDao(): RegistryApiDao
+    abstract fun jokeResultDao(): JokeDao
+    abstract fun chuckResultDao(): ChuckDao
+    abstract fun formResultDao(): RegistryDao
 
     companion object {
         @Volatile

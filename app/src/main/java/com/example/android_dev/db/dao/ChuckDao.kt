@@ -9,7 +9,7 @@ import com.example.android_dev.model.ChuckResult
 
 
 @Dao
-interface ChuckApiDao {
+interface ChuckDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addRandomChuck(chuck: ChuckResult)

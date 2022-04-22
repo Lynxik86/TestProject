@@ -1,4 +1,4 @@
-package com.example.android_dev
+package com.example.android_dev.recyclerview
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.android_dev.R
 import com.example.android_dev.R.id.item_jokes_text
 import com.example.android_dev.model.ChuckResult
 

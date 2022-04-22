@@ -4,23 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContentProviderCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.android_dev.RecyclerChuckAdapter
+import com.example.android_dev.recyclerview.RecyclerChuckAdapter
 import com.example.android_dev.databinding.FragmentFirstBinding
 import com.example.android_dev.recyclerview.RecyclerJokeAdapter
 import com.example.android_dev.viewmodel.ChuckViewModel
 import com.example.android_dev.viewmodel.JokeViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.Dispatchers as CoroutinesDispatchers
 
@@ -78,7 +73,7 @@ class FirstFragment : Fragment(), CoroutineScope {
 
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
         binding.buttonSecond.setOnClickListener {
-            chuckViewModel.coroutineGetChuck(requireContext().applicationContext)
+            chuckViewModel.coroutineGetChuck()
         }
 
         binding.buttonFirst.setOnClickListener {

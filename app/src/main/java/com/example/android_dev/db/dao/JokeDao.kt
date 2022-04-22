@@ -8,7 +8,7 @@ import androidx.room.Query
 import com.example.android_dev.model.JokeResult
 
 @Dao
-interface JokeApiDao {
+interface JokeDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addRandomJoke(joke: JokeResult)
