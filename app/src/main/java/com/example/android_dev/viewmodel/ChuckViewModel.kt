@@ -16,11 +16,12 @@ import kotlinx.coroutines.launch
 class ChuckViewModel(application: Application) : AndroidViewModel(application) {
     private val tasksRepository: TasksRepository =
         TasksRepository(MyTestDb.getDatabase(application).chuckResultDao(),
-            RetrofitClient.getChuckApi()
+            RetrofitClient.getChuckApi(), MyTestDb.getDatabase(application).jokeResultDao(),
+            RetrofitClient.getJokeApi()
         )
 
     internal var _chuckId = MutableLiveData<String>()
-    internal val allChucks: LiveData<List<ChuckResult>> = tasksRepository.readAllData()
+    internal val allChucks: LiveData<List<ChuckResult>> = tasksRepository.readAllDataChuck()
 
     fun coroutineGetChuck() = viewModelScope.launch(Dispatchers.Default) {
         _chuckId.postValue(tasksRepository.getChuck().id)

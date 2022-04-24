@@ -77,7 +77,7 @@ class FirstFragment : Fragment(), CoroutineScope {
         }
 
         binding.buttonFirst.setOnClickListener {
-            jokesViewModel.coroutineGetJoke(requireContext().applicationContext)
+            jokesViewModel.coroutineGetJoke()
 
             //запуск новой сопрограммы в фоне
             //сопрограммы - это легковесные потоки. Они запускаются с помощью билдера сопрограмм launch в контексте некоторого CoroutineScope. В примере выше мы запускаем новую сопрограмму в GlobalScope.
