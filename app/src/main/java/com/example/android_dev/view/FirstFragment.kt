@@ -103,23 +103,23 @@ class FirstFragment : Fragment(), CoroutineScope {
     }
 
     private fun observeViews(){
-        jokesViewModel._jokeId.observe(viewLifecycleOwner, Observer { jokeId ->
+        jokesViewModel._jokeId.observe(viewLifecycleOwner) { jokeId ->
             binding.textviewFirst.text = jokeId
-        })
+        }
 
-        chuckViewModel._chuckId.observe(viewLifecycleOwner, Observer { chuckId ->
+        chuckViewModel._chuckId.observe(viewLifecycleOwner) { chuckId ->
             binding.textviewFirst.text = chuckId
-        })
+        }
 
-        chuckViewModel.allChucks.observe(viewLifecycleOwner, Observer { chucks ->
+        chuckViewModel.allChucks.observe(viewLifecycleOwner) { chucks ->
             // Data bind the recycler view
             binding.recyclerView.adapter = RecyclerChuckAdapter(chucks)
-        })
+        }
 
-        jokesViewModel.allJokes.observe(viewLifecycleOwner, Observer { jokes ->
+        jokesViewModel.allJokes.observe(viewLifecycleOwner) { jokes ->
             // Data bind the recycler view
             binding.recyclerView.adapter = RecyclerJokeAdapter(jokes)
-        })
+        }
     }
 
     override fun onDestroyView() {

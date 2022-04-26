@@ -1,12 +1,10 @@
 package com.example.android_dev.db.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.android_dev.model.FormResult
-import com.example.android_dev.model.JokeResult
 
 @Dao
 interface RegistryDao {
@@ -14,5 +12,5 @@ interface RegistryDao {
     fun addRegistryData(form: FormResult)
 
     @Query("SELECT * FROM form_table where first_name=:login")
-    fun getFormByLogin(login: String): FormResult
+    fun getFormByLogin(login: String): FormResult?
 }
