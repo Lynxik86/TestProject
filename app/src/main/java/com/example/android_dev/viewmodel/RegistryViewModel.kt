@@ -7,6 +7,19 @@ import com.example.android_dev.db.MyTestDb
 import com.example.android_dev.model.FormResult
 
 class RegistryViewModel(application: Application) : AndroidViewModel(application) {
+    //internal var _formLogin = MutableLiveData<String>()
+    fun checkCredentials(
+        Context: Context,
+        firstname: String,
+
+        ): FormResult {
+        val formResult: FormResult
+        formResult =
+            MyTestDb.getDatabase(Context).formResultDao().getFormByLogin(firstname)
+
+        return formResult
+
+    }
 
     fun writeRegistryData(
         applicationContext: Context,

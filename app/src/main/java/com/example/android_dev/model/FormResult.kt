@@ -11,5 +11,5 @@ data class FormResult(
     val last_name: String,
     val email: String,
     val phone: String,
-    //val phone: String,
+
 )
