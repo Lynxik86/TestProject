@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.android_dev.db.MyTestDb
 import com.example.android_dev.model.FormResult
+import com.example.android_dev.network.RetrofitClient
+import com.example.android_dev.repository.TasksRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -15,30 +17,57 @@ val MAIL_REGEX = Regex("^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+
 val PHONE_REGEX = Regex("^\\+3\\d{9}$")
 
 class RegistryViewModel(application: Application) : AndroidViewModel(application) {
-    private val formResultDao = MyTestDb.getDatabase(application).formResultDao()
+
+    private val tasksRepository: TasksRepository =
+        TasksRepository(
+            MyTestDb.getDatabase(application).chuckResultDao(),
+            RetrofitClient.getChuckApi(), MyTestDb.getDatabase(application).jokeResultDao(),
+            RetrofitClient.getJokeApi(), MyTestDb.getDatabase(application).formResultDao()
+        )
+
+
+    // private val formResultDao = MyTestDb.getDatabase(application).formResultDao()
 
     internal var errorMessage = MutableLiveData<String?>()
     internal var successfulLogin = MutableLiveData<Boolean>()
 
-    //internal var _formLogin = MutableLiveData<String>()
-    fun checkCredentials(firstname: String, password: String) = viewModelScope.launch(Dispatchers.Default) {
 
-        val formResult: FormResult? = formResultDao.getFormByLogin(firstname)
+    fun checkCredentials(firstname: String, password: String) =
+        viewModelScope.launch(Dispatchers.Default) {
 
-        when {
-            formResult?.first_name.isNullOrEmpty() -> {
-                errorMessage.postValue("There is no such user")
-                successfulLogin.postValue(false)
-            }
-            formResult!!.last_name != password -> {
-                errorMessage.postValue("Password is incorrect")
-                successfulLogin.postValue(false)
-            }
-            else -> {
-                successfulLogin.postValue(true)
+             when {
+                tasksRepository.getFormResultByLogin(firstname)?.first_name.isNullOrEmpty() -> {
+                    errorMessage.postValue("There is no such user")
+                    successfulLogin.postValue(false)
+                }
+                tasksRepository.getFormResultByLogin(firstname)!!.last_name != password -> {
+                    errorMessage.postValue("Password is incorrect")
+                    successfulLogin.postValue(false)
+                }
+                else -> {
+                    successfulLogin.postValue(true)
+                }
             }
         }
-    }
+
+    /*fun checkCredentials(firstname: String, password: String) = viewModelScope.launch(Dispatchers.Default) {
+
+          val formResult: FormResult? = formResultDao.getFormByLogin(firstname)
+
+          when {
+              formResult?.first_name.isNullOrEmpty() -> {
+                  errorMessage.postValue("There is no such user")
+                  successfulLogin.postValue(false)
+              }
+              formResult!!.last_name != password -> {
+                  errorMessage.postValue("Password is incorrect")
+                  successfulLogin.postValue(false)
+              }
+              else -> {
+                  successfulLogin.postValue(true)
+              }
+          }
+      }*/
 
     fun loginComplete() {
         errorMessage.value = null
@@ -46,9 +75,15 @@ class RegistryViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun writeRegistryData(firstname: String, lastname: String, email: String, phone: String) {
-        val formResult = FormResult(first_name = firstname, last_name = lastname, email = email, phone = phone)
-        formResultDao.addRegistryData(formResult)
+        val formResult =
+            FormResult(first_name = firstname, last_name = lastname, email = email, phone = phone)
+        tasksRepository.addFormResult(formResult)
     }
+
+    /* fun writeRegistryData(firstname: String, lastname: String, email: String, phone: String) {
+         val formResult = FormResult(first_name = firstname, last_name = lastname, email = email, phone = phone)
+         formResultDao.addRegistryData(formResult)
+     }*/
 
     private fun checkTextByRegex(text: String, regex: Regex): Boolean {
         return text.matches(regex)
@@ -70,7 +105,12 @@ class RegistryViewModel(application: Application) : AndroidViewModel(application
         return checkTextByRegex(phone, PHONE_REGEX)
     }
 
-    fun checkAllTextByRegex(firstname: String, lastname: String, email: String, phone: String): Boolean {
+    fun checkAllTextByRegex(
+        firstname: String,
+        lastname: String,
+        email: String,
+        phone: String
+    ): Boolean {
         return checkFirstNameByRegex(firstname) &&
                 checkLastNameByRegex(lastname) &&
                 checkEmailByRegex(email) &&

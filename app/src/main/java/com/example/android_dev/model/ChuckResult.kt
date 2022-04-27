@@ -12,5 +12,5 @@ data class ChuckResult(
     val updated_at: String,
     val url: String,
     val value: String,
-   // val value: String,
+
 )

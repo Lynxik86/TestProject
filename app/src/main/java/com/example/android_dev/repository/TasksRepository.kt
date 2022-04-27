@@ -5,7 +5,9 @@ import androidx.lifecycle.LiveData
 import com.example.android_dev.db.MyTestDb
 import com.example.android_dev.db.dao.ChuckDao
 import com.example.android_dev.db.dao.JokeDao
+import com.example.android_dev.db.dao.RegistryDao
 import com.example.android_dev.model.ChuckResult
+import com.example.android_dev.model.FormResult
 import com.example.android_dev.model.JokeResult
 import com.example.android_dev.network.RetrofitClient
 import com.example.android_dev.network.interfaces.ChuckApi
@@ -15,7 +17,10 @@ class TasksRepository(
     private val chuckDao: ChuckDao,
     private val chuckApi: ChuckApi,
     private val jokeDao: JokeDao,
-    private val jokeApi: JokeApi
+    private val jokeApi: JokeApi,
+    private val registryDao: RegistryDao,
+
+
 ) {
 
     fun readAllDataChuck(): LiveData<List<ChuckResult>> {
@@ -46,4 +51,21 @@ class TasksRepository(
         return jokeResult
 
     }
+
+
+    fun getFormResultByLogin(firstname: String): FormResult? {
+
+        val formResult=registryDao.getFormByLogin(firstname)
+        return formResult
+
+    }
+
+
+    fun addFormResult (formResult: FormResult){
+
+        registryDao.addRegistryData(formResult)
+
+    }
+
+
 }

@@ -23,7 +23,7 @@ class JokeViewModel(application: Application) : AndroidViewModel(application) {
     private val tasksRepository: TasksRepository =
         TasksRepository(MyTestDb.getDatabase(application).chuckResultDao(),
             RetrofitClient.getChuckApi(), MyTestDb.getDatabase(application).jokeResultDao(),
-            RetrofitClient.getJokeApi()
+            RetrofitClient.getJokeApi(), MyTestDb.getDatabase(application).formResultDao()
         )
 
 

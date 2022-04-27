@@ -9,8 +9,9 @@ object AppUtils {
         context?.run {
             val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             if (inputManager != null && view != null) {
-                inputManager.hideSoftInputFromWindow(view.windowToken, 0)
+                inputManager.hideSoftInputFromWindow (view.windowToken, 0)
             }
         }
     }
 }
+
