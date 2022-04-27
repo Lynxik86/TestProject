@@ -20,5 +20,5 @@ interface ChuckDao {
     @Query("DELETE FROM chuck_table")
     suspend fun deleteAll()
 
-  /*  suspend fun deleteAll()*/
+
 }

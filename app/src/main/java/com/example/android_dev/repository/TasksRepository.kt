@@ -19,19 +19,19 @@ class TasksRepository(
     private val jokeDao: JokeDao,
     private val jokeApi: JokeApi,
     private val registryDao: RegistryDao,
+): DataSource{
 
 
-) {
 
-    fun readAllDataChuck(): LiveData<List<ChuckResult>> {
+    override fun readAllDataChuck(): LiveData<List<ChuckResult>> {
         return chuckDao.readAllData()
     }
 
-    fun readAllDataJokes(): LiveData<List<JokeResult>> {
+    override fun readAllDataJokes(): LiveData<List<JokeResult>> {
         return jokeDao.readAllData()
     }
 
-    internal suspend fun getChuck(): ChuckResult {
+     override suspend fun getChuck(): ChuckResult {
         val chuckResult = chuckApi.randomChuck()
 
         chuckDao.addRandomChuck(chuckResult)
@@ -41,7 +41,7 @@ class TasksRepository(
         return chuckResult
     }
 
-    internal suspend fun getJokes(): JokeResult {
+     override suspend fun getJokes(): JokeResult {
 
         val jokeResult = jokeApi.randomJoke()
         jokeDao.addRandomJoke(jokeResult)
@@ -53,7 +53,7 @@ class TasksRepository(
     }
 
 
-    fun getFormResultByLogin(firstname: String): FormResult? {
+    override fun getFormResultByLogin(firstname: String): FormResult? {
 
         val formResult=registryDao.getFormByLogin(firstname)
         return formResult
@@ -61,7 +61,7 @@ class TasksRepository(
     }
 
 
-    fun addFormResult (formResult: FormResult){
+    override fun addFormResult (formResult: FormResult){
 
         registryDao.addRegistryData(formResult)
 
