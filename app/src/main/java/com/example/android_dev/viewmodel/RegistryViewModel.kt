@@ -6,8 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.android_dev.db.MyTestDb
 import com.example.android_dev.model.FormResult
-import com.example.android_dev.network.RetrofitClient
-import com.example.android_dev.repository.TasksRepository
+import com.example.android_dev.repository.TasksRepositoryRegister
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -18,11 +17,9 @@ val PHONE_REGEX = Regex("^\\+3\\d{9}$")
 
 class RegistryViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val tasksRepository: TasksRepository =
-        TasksRepository(
-            MyTestDb.getDatabase(application).chuckResultDao(),
-            RetrofitClient.getChuckApi(), MyTestDb.getDatabase(application).jokeResultDao(),
-            RetrofitClient.getJokeApi(), MyTestDb.getDatabase(application).formResultDao()
+    private val tasksRepositoryRegister: TasksRepositoryRegister =
+        TasksRepositoryRegister(
+           MyTestDb.getDatabase(application).formResultDao()
         )
 
 
@@ -35,12 +32,13 @@ class RegistryViewModel(application: Application) : AndroidViewModel(application
     fun checkCredentials(firstname: String, password: String) =
         viewModelScope.launch(Dispatchers.Default) {
 
-             when {
-                tasksRepository.getFormResultByLogin(firstname)?.first_name.isNullOrEmpty() -> {
+            val formResult = tasksRepositoryRegister.getFormResultByLogin(firstname)
+            when {
+                formResult?.first_name.isNullOrEmpty() -> {
                     errorMessage.postValue("There is no such user")
                     successfulLogin.postValue(false)
                 }
-                tasksRepository.getFormResultByLogin(firstname)!!.last_name != password -> {
+                formResult!!.last_name != password -> {
                     errorMessage.postValue("Password is incorrect")
                     successfulLogin.postValue(false)
                 }
@@ -77,7 +75,7 @@ class RegistryViewModel(application: Application) : AndroidViewModel(application
     fun writeRegistryData(firstname: String, lastname: String, email: String, phone: String) {
         val formResult =
             FormResult(first_name = firstname, last_name = lastname, email = email, phone = phone)
-        tasksRepository.addFormResult(formResult)
+        tasksRepositoryRegister.addFormResult(formResult)
     }
 
     /* fun writeRegistryData(firstname: String, lastname: String, email: String, phone: String) {

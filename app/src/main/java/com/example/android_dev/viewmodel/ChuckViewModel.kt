@@ -8,22 +8,21 @@ import androidx.lifecycle.viewModelScope
 import com.example.android_dev.db.MyTestDb
 import com.example.android_dev.model.ChuckResult
 import com.example.android_dev.network.RetrofitClient
-import com.example.android_dev.repository.TasksRepository
+import com.example.android_dev.repository.TasksRepositoryChuck
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
 class ChuckViewModel(application: Application) : AndroidViewModel(application) {
-    private val tasksRepository: TasksRepository =
-        TasksRepository(MyTestDb.getDatabase(application).chuckResultDao(),
-            RetrofitClient.getChuckApi(), MyTestDb.getDatabase(application).jokeResultDao(),
-            RetrofitClient.getJokeApi(), MyTestDb.getDatabase(application).formResultDao()
+    private val tasksRepositoryChuck: TasksRepositoryChuck =
+        TasksRepositoryChuck(MyTestDb.getDatabase(application).chuckResultDao(),
+            RetrofitClient.getChuckApi()
         )
 
     internal var _chuckId = MutableLiveData<String>()
-    internal val allChucks: LiveData<List<ChuckResult>> = tasksRepository.readAllDataChuck()
+    internal val allChucks: LiveData<List<ChuckResult>> = tasksRepositoryChuck.readAllDataChuck()
 
     fun coroutineGetChuck() = viewModelScope.launch(Dispatchers.Default) {
-        _chuckId.postValue(tasksRepository.getChuck().id)
+        _chuckId.postValue(tasksRepositoryChuck.getChuck().id)
     }
 }
