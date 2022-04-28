@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.android_dev.db.MyTestDb
 import com.example.android_dev.model.ChuckResult
-import com.example.android_dev.network.RetrofitClient
 import com.example.android_dev.repository.TasksRepositoryChuck
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -15,9 +14,7 @@ import kotlinx.coroutines.launch
 
 class ChuckViewModel(application: Application) : AndroidViewModel(application) {
     private val tasksRepositoryChuck: TasksRepositoryChuck =
-        TasksRepositoryChuck(MyTestDb.getDatabase(application).chuckResultDao(),
-            RetrofitClient.getChuckApi()
-        )
+        TasksRepositoryChuck(MyTestDb.getDatabase(application))
 
     internal var _chuckId = MutableLiveData<String>()
     internal val allChucks: LiveData<List<ChuckResult>> = tasksRepositoryChuck.readAllDataChuck()

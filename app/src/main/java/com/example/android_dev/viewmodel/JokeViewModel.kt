@@ -16,9 +16,7 @@ class JokeViewModel(application: Application) : AndroidViewModel(application) {
 
 
     private val tasksRepositoryJoke: TasksRepositoryJoke =
-        TasksRepositoryJoke(MyTestDb.getDatabase(application).jokeResultDao(),
-            RetrofitClient.getJokeApi()
-        )
+        TasksRepositoryJoke(MyTestDb.getDatabase(application))
 
 
     internal val allJokes: LiveData<List<JokeResult>> =
@@ -27,9 +25,9 @@ class JokeViewModel(application: Application) : AndroidViewModel(application) {
     var _jokeId = MutableLiveData<String>()
 
 
-    fun coroutineGetJoke()= viewModelScope.launch(Dispatchers.Default) {
+    fun coroutineGetJoke() = viewModelScope.launch(Dispatchers.Default) {
         _jokeId.postValue(tasksRepositoryJoke.getJokes().joke)
-       }
+    }
 }
 
 

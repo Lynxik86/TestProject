@@ -1,29 +1,36 @@
 package com.example.android_dev.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
-import com.example.android_dev.db.dao.JokeDao
+import com.example.android_dev.db.LocalDataSourceJoke
+import com.example.android_dev.db.MyTestDb
+import com.example.android_dev.db.RemoteDataSourceJoke
 import com.example.android_dev.model.JokeResult
-import com.example.android_dev.network.interfaces.JokeApi
+import com.example.android_dev.network.RetrofitClient
 
 class TasksRepositoryJoke(
-    private val jokeDao: JokeDao,
-    private val jokeApi: JokeApi,
+    private val connectDb: MyTestDb
 ) : DataSourceJoke {
 
-    override fun readAllDataJokes(): LiveData<List<JokeResult>> {
-        return jokeDao.readAllData()
-    }
+    private val localDataSourceJoke: LocalDataSourceJoke =
+        LocalDataSourceJoke(
+            connectDb.jokeResultDao(),
+        )
 
+    private val remoteDataSourceJoke: RemoteDataSourceJoke =
+        RemoteDataSourceJoke(
+            RetrofitClient.getJokeApi()
+        )
+
+    override fun readAllDataJokes(): LiveData<List<JokeResult>> {
+        return localDataSourceJoke.readJokeResult()
+
+    }
 
     override suspend fun getJokes(): JokeResult {
 
-        val jokeResult = jokeApi.randomJoke()
-        jokeDao.addRandomJoke(jokeResult)
-        //Send an INFO log message.
-        Log.i("JOKE", jokeResult.joke)
+        val jokeResult = remoteDataSourceJoke.getJokeResult()
+        return localDataSourceJoke.postJoke(jokeResult)
 
-        return jokeResult
 
     }
 }
