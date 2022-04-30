@@ -11,7 +11,7 @@ import com.example.android_dev.model.ChuckResult
 import com.example.android_dev.model.FormResult
 import com.example.android_dev.model.JokeResult
 
-@Database(entities = [(ChuckResult::class), (JokeResult::class), (FormResult::class)],  version = 3)
+@Database(entities = [(ChuckResult::class), (JokeResult::class), (FormResult::class)], version = 3)
 abstract class MyTestDb : RoomDatabase() {
     abstract fun jokeResultDao(): JokeDao
     abstract fun chuckResultDao(): ChuckDao

@@ -7,9 +7,17 @@ import com.example.android_dev.db.RemoteDataSourceJoke
 import com.example.android_dev.model.JokeResult
 import com.example.android_dev.network.RetrofitClient
 
-class TasksRepositoryJoke(
-    private val connectDb: MyTestDb
-) : DataSourceJoke {
+class TasksRepositoryJoke private constructor(private val connectDb: MyTestDb) : DataSourceJoke {
+
+    companion object {
+        @Volatile
+        private var INSTANCE: TasksRepositoryJoke? = null
+
+        fun getInstance(connectDb: MyTestDb): TasksRepositoryJoke =
+            INSTANCE ?: synchronized(this) {
+                INSTANCE ?: TasksRepositoryJoke(connectDb).also { INSTANCE = it }
+            }
+    }
 
     private val localDataSourceJoke: LocalDataSourceJoke =
         LocalDataSourceJoke(

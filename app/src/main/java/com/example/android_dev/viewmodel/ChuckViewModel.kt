@@ -13,10 +13,10 @@ import kotlinx.coroutines.launch
 
 
 class ChuckViewModel(application: Application) : AndroidViewModel(application) {
-   /* private val tasksRepositoryChuck: TasksRepositoryChuck =
-        TasksRepositoryChuck(MyTestDb.getDatabase(application))*/
-   private val tasksRepositoryChuck: TasksRepositoryChuck=
-       TasksRepositoryChuck.getInstance(MyTestDb.getDatabase(application))
+    /* private val tasksRepositoryChuck: TasksRepositoryChuck =
+         TasksRepositoryChuck(MyTestDb.getDatabase(application))*/
+    private val tasksRepositoryChuck: TasksRepositoryChuck =
+        TasksRepositoryChuck.getInstance(MyTestDb.getDatabase(application))
 
     internal var _chuckId = MutableLiveData<String>()
     internal val allChucks: LiveData<List<ChuckResult>> = tasksRepositoryChuck.readAllDataChuck()

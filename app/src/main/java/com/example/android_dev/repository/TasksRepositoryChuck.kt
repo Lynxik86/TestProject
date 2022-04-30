@@ -7,28 +7,16 @@ import com.example.android_dev.db.RemoteDataSourceChuck
 import com.example.android_dev.model.ChuckResult
 import com.example.android_dev.network.RetrofitClient
 
-
 class TasksRepositoryChuck private constructor(private val connectDb: MyTestDb) : DataSourceChuck {
 
-   /* companion object {
-        fun getInstance(): TasksRepositoryChuck? {
-            var instance: TasksRepositoryChuck? = null
-            val initialized = AtomicBoolean()
-            if (initialized.getAndSet(true)) {
-                instance = TasksRepositoryChuck(connectDb)
-            }
-            return instance
-        }
-    }*/
-
     companion object {
-        @Volatile private var INSTANCE: TasksRepositoryChuck? = null
+        @Volatile
+        private var INSTANCE: TasksRepositoryChuck? = null
 
         fun getInstance(connectDb: MyTestDb): TasksRepositoryChuck =
             INSTANCE ?: synchronized(this) {
                 INSTANCE ?: TasksRepositoryChuck(connectDb).also { INSTANCE = it }
             }
-
     }
 
     val localDataSourceChuck: LocalDataSourceChuck =
@@ -50,9 +38,18 @@ class TasksRepositoryChuck private constructor(private val connectDb: MyTestDb) 
         val chuckResult = remoteDataSourceChuck.getChuckResult()
         return localDataSourceChuck.postChuck(chuckResult)
     }
+}
 
-
-
+/* companion object {
+      fun getInstance(): TasksRepositoryChuck? {
+          var instance: TasksRepositoryChuck? = null
+          val initialized = AtomicBoolean()
+          if (initialized.getAndSet(true)) {
+              instance = TasksRepositoryChuck(connectDb)
+          }
+          return instance
+      }
+  }*/
 
 /*companion object {
     @Volatile
@@ -65,18 +62,14 @@ class TasksRepositoryChuck private constructor(private val connectDb: MyTestDb) 
         }
 }*/
 
-    /*fun getInstance(): TasksRepositoryChuck {
-        val instance: TasksRepositoryChuck
-        val initialized = AtomicBoolean()
-        if (initialized.getAndSet(true)) {
-            instance = TasksRepositoryChuck( connectDb )
-        }
-        return instance
-    }*/
-
-
-
-}
+/*fun getInstance(): TasksRepositoryChuck {
+    val instance: TasksRepositoryChuck
+    val initialized = AtomicBoolean()
+    if (initialized.getAndSet(true)) {
+        instance = TasksRepositoryChuck( connectDb )
+    }
+    return instance
+}*/
 
 
 /*{
@@ -91,9 +84,6 @@ class TasksRepositoryChuck private constructor(private val connectDb: MyTestDb) 
         }
         return instance!!
     }*/
-
-
-}
 
 
 /*

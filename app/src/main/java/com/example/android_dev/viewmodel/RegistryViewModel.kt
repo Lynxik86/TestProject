@@ -17,11 +17,13 @@ val PHONE_REGEX = Regex("^\\+3\\d{9}$")
 
 class RegistryViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val tasksRepositoryRegister: TasksRepositoryRegister =
+    /*private val tasksRepositoryRegister: TasksRepositoryRegister =
         TasksRepositoryRegister(
            MyTestDb.getDatabase(application).formResultDao()
-        )
+        )*/
 
+    private val tasksRepositoryRegister: TasksRepositoryRegister =
+        TasksRepositoryRegister.getInstance(MyTestDb.getDatabase(application))
 
     // private val formResultDao = MyTestDb.getDatabase(application).formResultDao()
 
