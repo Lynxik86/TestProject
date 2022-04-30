@@ -8,16 +8,35 @@ import com.example.android_dev.model.ChuckResult
 import com.example.android_dev.network.RetrofitClient
 
 
-class TasksRepositoryChuck(
-    private val connectDb: MyTestDb
-) : DataSourceChuck {
+class TasksRepositoryChuck private constructor(private val connectDb: MyTestDb) : DataSourceChuck {
 
-    private val localDataSourceChuck: LocalDataSourceChuck =
+   /* companion object {
+        fun getInstance(): TasksRepositoryChuck? {
+            var instance: TasksRepositoryChuck? = null
+            val initialized = AtomicBoolean()
+            if (initialized.getAndSet(true)) {
+                instance = TasksRepositoryChuck(connectDb)
+            }
+            return instance
+        }
+    }*/
+
+    companion object {
+        @Volatile private var INSTANCE: TasksRepositoryChuck? = null
+
+        fun getInstance(connectDb: MyTestDb): TasksRepositoryChuck =
+            INSTANCE ?: synchronized(this) {
+                INSTANCE ?: TasksRepositoryChuck(connectDb).also { INSTANCE = it }
+            }
+
+    }
+
+    val localDataSourceChuck: LocalDataSourceChuck =
         LocalDataSourceChuck(
             connectDb.chuckResultDao(),
         )
 
-    private val remoteDataSourceChuck: RemoteDataSourceChuck =
+    val remoteDataSourceChuck: RemoteDataSourceChuck =
         RemoteDataSourceChuck(
             RetrofitClient.getChuckApi()
         )
@@ -31,7 +50,78 @@ class TasksRepositoryChuck(
         val chuckResult = remoteDataSourceChuck.getChuckResult()
         return localDataSourceChuck.postChuck(chuckResult)
     }
+
+
+
+
+/*companion object {
+    @Volatile
+    private var INSTANCE: Singleton? = null
+
+    fun getInstance(application: Application): Singleton =
+        INSTANCE ?: synchronized(this) {
+            INSTANCE
+                ?: Singleton(application).also { INSTANCE = it }
+        }
+}*/
+
+    /*fun getInstance(): TasksRepositoryChuck {
+        val instance: TasksRepositoryChuck
+        val initialized = AtomicBoolean()
+        if (initialized.getAndSet(true)) {
+            instance = TasksRepositoryChuck( connectDb )
+        }
+        return instance
+    }*/
+
+
+
 }
+
+
+/*{
+        if (instance == null) {
+            synchronized(this) {
+                if (instance == null) {
+                    val slothchuck = TasksRepositoryChuck()
+                    instance = slothchuck
+                    return slothchuck
+                }
+            }
+        }
+        return instance!!
+    }*/
+
+
+}
+
+
+/*
+class TasksRepositoryChuck(
+    private val connectDb: MyTestDb
+) : DataSourceChuck {
+
+        val localDataSourceChuck: LocalDataSourceChuck =
+            LocalDataSourceChuck(
+                connectDb.chuckResultDao(),
+            )
+
+        val remoteDataSourceChuck: RemoteDataSourceChuck =
+            RemoteDataSourceChuck(
+                RetrofitClient.getChuckApi()
+            )
+
+    override fun readAllDataChuck(): LiveData<List<ChuckResult>> {
+        return localDataSourceChuck.readChuckResult()
+    }
+
+
+    override suspend fun getChuck(): ChuckResult {
+        val chuckResult = remoteDataSourceChuck.getChuckResult()
+        return localDataSourceChuck.postChuck(chuckResult)
+    }
+}
+*/
 
 
 /*class TasksRepositoryChuck(
