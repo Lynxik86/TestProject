@@ -13,4 +13,7 @@ interface RegistryDao {
 
     @Query("SELECT * FROM form_table where first_name=:login")
     fun getFormByLogin(login: String): FormResult?
+
+    @Query("DELETE FROM form_table where first_name IS NULL and not first_name='admin'")
+    fun deleteAllNotAdmin()
 }

@@ -34,5 +34,13 @@ class TasksRepositoryRegister private constructor(private val connectDb: MyTestD
 
     }
 
+    override suspend fun deleteAllNotAdmin(){
+        localDataSourceForm.deleteFormResultNotAdmin()
+
+
+    }
+
+
+
 
 }

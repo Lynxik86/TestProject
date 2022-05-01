@@ -9,5 +9,6 @@ interface DataSourceChuck {
 
     fun readAllDataChuck(): LiveData<List<ChuckResult>>
     suspend fun getChuck(): ChuckResult
+    suspend fun deleteAllChucks()
 
 }

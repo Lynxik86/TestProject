@@ -11,4 +11,6 @@ interface DataSourceJoke {
 
     suspend fun getJokes(): JokeResult
 
+    suspend fun deleteAllJokes()
+
 }

@@ -37,16 +37,22 @@ class ThirdFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         registryViewModel = ViewModelProvider(this)[RegistryViewModel::class.java]
-
+        deleteDbNotAdmin()
         editData()
 
         binding.formRegister.setOnClickListener { registerButton ->
             AppUtils.hideKeyboard(requireContext(), registerButton)
 
             validateAndSaveData()
+
         }
     }
 
+    private fun deleteDbNotAdmin(){
+
+        registryViewModel.coroutineDeleteForm()
+
+    }
     private fun editData() {
         binding.firstNameEdit.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus && registryViewModel.checkFirstNameByRegex(binding.firstNameEdit.text.toString())) {

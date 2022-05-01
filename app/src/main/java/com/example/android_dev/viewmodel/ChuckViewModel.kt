@@ -20,8 +20,13 @@ class ChuckViewModel(application: Application) : AndroidViewModel(application) {
 
     internal var _chuckId = MutableLiveData<String>()
     internal val allChucks: LiveData<List<ChuckResult>> = tasksRepositoryChuck.readAllDataChuck()
+    internal var allChucksDelete = MutableLiveData<String>()
 
     fun coroutineGetChuck() = viewModelScope.launch(Dispatchers.Default) {
         _chuckId.postValue(tasksRepositoryChuck.getChuck().id)
+    }
+
+    fun coroutineDeleteChuck() = viewModelScope.launch(Dispatchers.Default) {
+        allChucksDelete.postValue(tasksRepositoryChuck.deleteAllChucks().toString())
     }
 }

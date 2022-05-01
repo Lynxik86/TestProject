@@ -23,11 +23,17 @@ class JokeViewModel(application: Application) : AndroidViewModel(application) {
     internal val allJokes: LiveData<List<JokeResult>> =
         tasksRepositoryJoke.readAllDataJokes()
 
+    internal var allJokesDelete = MutableLiveData<String>()
+
     var _jokeId = MutableLiveData<String>()
 
 
     fun coroutineGetJoke() = viewModelScope.launch(Dispatchers.Default) {
         _jokeId.postValue(tasksRepositoryJoke.getJokes().joke)
+    }
+
+    fun coroutineDeleteJokes() = viewModelScope.launch(Dispatchers.Default) {
+        allJokesDelete.postValue(tasksRepositoryJoke.deleteAllJokes().toString())
     }
 }
 

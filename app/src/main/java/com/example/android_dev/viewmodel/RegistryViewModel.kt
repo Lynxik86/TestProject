@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 val FIRSTNAME_REGEX = Regex("^[a-zA-Z][a-zA-Z0-9]{1,10}$")
 val LASTNAME_REGEX = Regex("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#\$%^&*]{6,}$")
 val MAIL_REGEX = Regex("^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}\$")
-val PHONE_REGEX = Regex("^\\+3\\d{9}$")
+val PHONE_REGEX = Regex("^\\+3\\d{11}$")
 
 class RegistryViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -29,7 +29,11 @@ class RegistryViewModel(application: Application) : AndroidViewModel(application
 
     internal var errorMessage = MutableLiveData<String?>()
     internal var successfulLogin = MutableLiveData<Boolean>()
+    internal var allFormDelete = MutableLiveData<String>()
 
+    fun coroutineDeleteForm() = viewModelScope.launch(Dispatchers.Default) {
+        allFormDelete.postValue(tasksRepositoryRegister.deleteAllNotAdmin().toString())
+    }
 
     fun checkCredentials(firstname: String, password: String) =
         viewModelScope.launch(Dispatchers.Default) {

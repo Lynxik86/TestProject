@@ -38,7 +38,10 @@ class TasksRepositoryJoke private constructor(private val connectDb: MyTestDb) :
 
         val jokeResult = remoteDataSourceJoke.getJokeResult()
         return localDataSourceJoke.postJoke(jokeResult)
-
-
     }
+
+    override suspend fun deleteAllJokes(){
+        localDataSourceJoke.deleteJokes()
+    }
+
 }

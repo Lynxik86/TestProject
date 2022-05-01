@@ -15,4 +15,10 @@ class LocalDataSourceForm(private val formResultDao: RegistryDao) {
     fun addRegistryFormData(formResult: FormResult) {
         formResultDao.addRegistryData(formResult)
     }
+
+    suspend fun deleteFormResultNotAdmin(){
+        formResultDao.deleteAllNotAdmin()
+
+
+    }
 }

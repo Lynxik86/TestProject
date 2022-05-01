@@ -18,4 +18,8 @@ class LocalDataSourceChuck(
         Log.i("JOKE", chuckResult.id)
         return chuckResult
     }
+
+    suspend fun deleteChucks() {
+        chuckDao.deleteAll()
+    }
 }

@@ -11,4 +11,6 @@ interface DataSourceForm {
 
     fun addFormResult (formResult: FormResult)
 
+    suspend fun deleteAllNotAdmin()
+
 }

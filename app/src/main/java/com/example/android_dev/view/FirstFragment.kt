@@ -5,12 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.android_dev.recyclerview.RecyclerChuckAdapter
 import com.example.android_dev.databinding.FragmentFirstBinding
+import com.example.android_dev.recyclerview.RecyclerChuckAdapter
 import com.example.android_dev.recyclerview.RecyclerJokeAdapter
 import com.example.android_dev.viewmodel.ChuckViewModel
 import com.example.android_dev.viewmodel.JokeViewModel
@@ -67,7 +66,8 @@ class FirstFragment : Fragment(), CoroutineScope {
         // Get the view model
         chuckViewModel = ViewModelProvider(this)[ChuckViewModel::class.java]
         jokesViewModel = ViewModelProvider(this)[JokeViewModel::class.java]
-
+        deleteDBChuck()
+        deleteDBJoke()
         setupRecyclerView()
         observeViews()
 
@@ -78,6 +78,7 @@ class FirstFragment : Fragment(), CoroutineScope {
 
         binding.buttonFirst.setOnClickListener {
             jokesViewModel.coroutineGetJoke()
+
 
             //запуск новой сопрограммы в фоне
             //сопрограммы - это легковесные потоки. Они запускаются с помощью билдера сопрограмм launch в контексте некоторого CoroutineScope. В примере выше мы запускаем новую сопрограмму в GlobalScope.
@@ -91,6 +92,16 @@ class FirstFragment : Fragment(), CoroutineScope {
                 }
             }*/
         }
+    }
+
+    private fun deleteDBChuck() {
+        chuckViewModel.coroutineDeleteChuck()
+
+    }
+
+    private fun deleteDBJoke() {
+        jokesViewModel.coroutineDeleteJokes()
+
     }
 
     private fun setupRecyclerView(){

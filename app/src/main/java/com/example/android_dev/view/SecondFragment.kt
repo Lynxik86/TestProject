@@ -21,25 +21,39 @@ class SecondFragment : Fragment() {
     private var _binding: FragmentSecondBinding? = null
     private lateinit var registryViewModel: RegistryViewModel
 
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
 
     // private var numberOfRemainingLoginAttempts = 3
-    // private val regex = Regex("^[a-zA-Z][a-zA-Z0-9]{1,10}$")
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentSecondBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        //chuckViewModel = ViewModelProvider(this)[ChuckViewModel::class.java]
         registryViewModel = ViewModelProvider(this)[RegistryViewModel::class.java]
+
         setupViews()
         observeViews()
+
+
+
     }
+
+   /* private fun deleteDB() {
+        chuckViewModel.coroutineDeleteChuck()
+    }*/
+
+
 
     private fun observeViews() {
         registryViewModel.successfulLogin.observe(viewLifecycleOwner) { loggedIn ->
@@ -122,6 +136,7 @@ class SecondFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        //deleteDB()
 
     }
 }

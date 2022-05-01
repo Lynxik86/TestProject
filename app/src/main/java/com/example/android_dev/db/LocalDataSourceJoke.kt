@@ -21,4 +21,8 @@ class LocalDataSourceJoke(
 
         return jokeResult
     }
+
+    suspend fun deleteJokes() {
+        jokeDao.deleteAll()
+    }
 }

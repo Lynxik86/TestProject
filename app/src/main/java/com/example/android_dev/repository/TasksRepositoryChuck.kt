@@ -19,12 +19,12 @@ class TasksRepositoryChuck private constructor(private val connectDb: MyTestDb) 
             }
     }
 
-    val localDataSourceChuck: LocalDataSourceChuck =
+    private val localDataSourceChuck: LocalDataSourceChuck =
         LocalDataSourceChuck(
             connectDb.chuckResultDao(),
         )
 
-    val remoteDataSourceChuck: RemoteDataSourceChuck =
+    private val remoteDataSourceChuck: RemoteDataSourceChuck =
         RemoteDataSourceChuck(
             RetrofitClient.getChuckApi()
         )
@@ -33,10 +33,13 @@ class TasksRepositoryChuck private constructor(private val connectDb: MyTestDb) 
         return localDataSourceChuck.readChuckResult()
     }
 
-
     override suspend fun getChuck(): ChuckResult {
         val chuckResult = remoteDataSourceChuck.getChuckResult()
         return localDataSourceChuck.postChuck(chuckResult)
+    }
+
+    override suspend fun deleteAllChucks(){
+        localDataSourceChuck.deleteChucks()
     }
 }
 
