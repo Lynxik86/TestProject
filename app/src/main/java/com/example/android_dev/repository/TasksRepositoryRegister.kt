@@ -22,25 +22,14 @@ class TasksRepositoryRegister private constructor(private val connectDb: MyTestD
         )
 
     override fun getFormResultByLogin(firstname: String): FormResult? {
-
         return localDataSourceForm.getFormByLogin(firstname)
-
     }
-
 
     override fun addFormResult(formResult: FormResult) {
-
         localDataSourceForm.addRegistryFormData(formResult)
-
     }
 
-    override suspend fun deleteAllNotAdmin(){
+    override suspend fun deleteAllNotAdmin() {
         localDataSourceForm.deleteFormResultNotAdmin()
-
-
     }
-
-
-
-
 }

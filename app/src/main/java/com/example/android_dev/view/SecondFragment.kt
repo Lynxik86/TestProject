@@ -44,15 +44,11 @@ class SecondFragment : Fragment() {
 
         setupViews()
         observeViews()
-
-
-
     }
 
-   /* private fun deleteDB() {
-        chuckViewModel.coroutineDeleteChuck()
-    }*/
-
+    /* private fun deleteDB() {
+         chuckViewModel.coroutineDeleteChuck()
+     }*/
 
 
     private fun observeViews() {

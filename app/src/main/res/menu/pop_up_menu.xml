@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+            <item
+                android:id="@+id/updateChuck"
+                android:title="@string/updatechuk"
+                android:src="@mipmap/ic_launcher_update"/>
+            <item
+                android:id="@+id/updateJoke"
+                android:title="@string/updatejoke"
+                android:src="@mipmap/ic_launcher_update"/>
+</menu>

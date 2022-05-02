@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.android_dev.R
 import com.example.android_dev.databinding.FragmentFirstBinding
 import com.example.android_dev.recyclerview.RecyclerChuckAdapter
 import com.example.android_dev.recyclerview.RecyclerJokeAdapter
@@ -66,11 +68,19 @@ class FirstFragment : Fragment(), CoroutineScope {
         // Get the view model
         chuckViewModel = ViewModelProvider(this)[ChuckViewModel::class.java]
         jokesViewModel = ViewModelProvider(this)[JokeViewModel::class.java]
-        deleteDBChuck()
-        deleteDBJoke()
+
+        val popupMenu = PopupMenu(requireContext(), binding.textviewFirst)
+        popupMenu.inflate(R.menu.pop_up_menu)
+
+        //deleteDBChuck()
+        // deleteDBJoke()
         setupRecyclerView()
         observeViews()
 
+        binding.textviewFirst.setOnClickListener {
+            popUpUpdate(popupMenu)
+            popupMenu.show()
+        }
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
         binding.buttonSecond.setOnClickListener {
             chuckViewModel.coroutineGetChuck()
@@ -85,35 +95,49 @@ class FirstFragment : Fragment(), CoroutineScope {
             // Это означает, что время жизни новой сопрограммы ограничено только временем жизни всего приложения.
 
             //  chuckViewModel.coroutineGetChuck(requireContext().applicationContext)
-       /*     viewLifecycleOwner.lifecycleScope.launch {
-                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    binding.textviewFirst.text =
-                        jokesViewModel.getJokes(ContentProviderCompat.requireContext().applicationContext).joke
-                }
-            }*/
+            /*     viewLifecycleOwner.lifecycleScope.launch {
+                      viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                         binding.textviewFirst.text =
+                             jokesViewModel.getJokes(ContentProviderCompat.requireContext().applicationContext).joke
+                     }
+                 }*/
         }
+    }
+
+    private fun popUpUpdate(popupMenu:PopupMenu) {
+
+        popupMenu.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.updateChuck -> {
+                    deleteDBChuck()
+                    true
+                }
+                R.id.updateJoke -> {
+                    deleteDBJoke()
+                    true
+                }
+                else -> false
+            }
+         }
     }
 
     private fun deleteDBChuck() {
         chuckViewModel.coroutineDeleteChuck()
-
     }
 
     private fun deleteDBJoke() {
         jokesViewModel.coroutineDeleteJokes()
-
     }
 
-    private fun setupRecyclerView(){
+    private fun setupRecyclerView() {
         // Specify layout for recycler view
         val linearLayoutManager = LinearLayoutManager(
             requireContext(), RecyclerView.VERTICAL, false
         )
-
         binding.recyclerView.layoutManager = linearLayoutManager
     }
 
-    private fun observeViews(){
+    private fun observeViews() {
         jokesViewModel._jokeId.observe(viewLifecycleOwner) { jokeId ->
             binding.textviewFirst.text = jokeId
         }

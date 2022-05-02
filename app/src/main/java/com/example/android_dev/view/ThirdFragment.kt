@@ -48,11 +48,10 @@ class ThirdFragment : Fragment() {
         }
     }
 
-    private fun deleteDbNotAdmin(){
-
+    private fun deleteDbNotAdmin() {
         registryViewModel.coroutineDeleteForm()
-
     }
+
     private fun editData() {
         binding.firstNameEdit.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus && registryViewModel.checkFirstNameByRegex(binding.firstNameEdit.text.toString())) {

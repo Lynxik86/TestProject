@@ -16,7 +16,7 @@ class LocalDataSourceForm(private val formResultDao: RegistryDao) {
         formResultDao.addRegistryData(formResult)
     }
 
-    suspend fun deleteFormResultNotAdmin(){
+    suspend fun deleteFormResultNotAdmin() {
         formResultDao.deleteAllNotAdmin()
 
 

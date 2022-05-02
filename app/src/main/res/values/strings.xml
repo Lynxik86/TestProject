@@ -29,4 +29,6 @@
     <string name="number_phone">+00-000-000 0000*</string>
     <string name="button_register">Register</string>
     <string name="success">Success!!</string>
+    <string name="updatechuk">UpdateChuck</string>
+    <string name="updatejoke">UpdateJoke</string>
 </resources>
