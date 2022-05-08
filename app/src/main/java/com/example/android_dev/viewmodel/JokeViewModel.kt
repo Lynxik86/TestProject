@@ -5,35 +5,42 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.android_dev.db.MyTestDb
-import com.example.android_dev.model.JokeResult
-import com.example.android_dev.repository.TasksRepositoryJoke
+import com.example.android_dev.data.local.ConnectDb
+import com.example.android_dev.data.model.JokeResult
+import com.example.android_dev.repository.JokeTasksRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class JokeViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class JokeViewModel @Inject constructor (
+    application: Application,
+    private val  jokeTasksRepository: JokeTasksRepository
+    ) : AndroidViewModel(application) {
 
 
-    /*private val tasksRepositoryJoke: TasksRepositoryJoke =
-        TasksRepositoryJoke(MyTestDb.getDatabase(application))*/
+   /* private val  jokeTasksRepository: JokeTasksRepository =
+        JokeTasksRepository(MyTestDb.getDatabase(application))*/
 
-    private val tasksRepositoryJoke: TasksRepositoryJoke =
-        TasksRepositoryJoke.getInstance(MyTestDb.getDatabase(application))
+   /* private val jokeTasksRepository: JokeTasksRepository =
+        JokeTasksRepository.getInstance(ConnectDb.getDatabase(application))*/
 
     internal val allJokes: LiveData<List<JokeResult>> =
-        tasksRepositoryJoke.readAllDataJokes()
+        jokeTasksRepository.readAllDataJokes()
 
-    internal var allJokesDelete = MutableLiveData<String>()
+    private var allJokesDelete = MutableLiveData<String>()
 
     var _jokeId = MutableLiveData<String>()
 
 
     fun coroutineGetJoke() = viewModelScope.launch(Dispatchers.Default) {
-        _jokeId.postValue(tasksRepositoryJoke.getJokes().joke)
+        _jokeId.postValue(jokeTasksRepository.getJokes().joke)
     }
 
     fun coroutineDeleteJokes() = viewModelScope.launch(Dispatchers.Default) {
-        allJokesDelete.postValue(tasksRepositoryJoke.deleteAllJokes().toString())
+        allJokesDelete.postValue(jokeTasksRepository.deleteAllJokes().toString())
     }
 }
 

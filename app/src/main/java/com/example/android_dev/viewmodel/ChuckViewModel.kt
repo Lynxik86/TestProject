@@ -5,28 +5,36 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.android_dev.db.MyTestDb
-import com.example.android_dev.model.ChuckResult
-import com.example.android_dev.repository.TasksRepositoryChuck
+import com.example.android_dev.data.local.ConnectDb
+import com.example.android_dev.data.model.ChuckResult
+import com.example.android_dev.repository.ChuckTasksRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@HiltViewModel
+class ChuckViewModel @Inject constructor (
+    application: Application,
+    private val chuckTasksRepository: ChuckTasksRepository
+    ) : AndroidViewModel(application) {
 
-class ChuckViewModel(application: Application) : AndroidViewModel(application) {
-    /* private val tasksRepositoryChuck: TasksRepositoryChuck =
-         TasksRepositoryChuck(MyTestDb.getDatabase(application))*/
-    private val tasksRepositoryChuck: TasksRepositoryChuck =
-        TasksRepositoryChuck.getInstance(MyTestDb.getDatabase(application))
+    /* private val chuckTasksRepository: ChuckTasksRepository =
+         ChuckTasksRepository(MyTestDb.getDatabase(application))*/
+
+  /*  private val chuck: ChuckTasksRepository =
+        ChuckTasksRepository.getInstance(ConnectDb.getDatabase(application))*/
 
     internal var _chuckId = MutableLiveData<String>()
-    internal val allChucks: LiveData<List<ChuckResult>> = tasksRepositoryChuck.readAllDataChuck()
-    internal var allChucksDelete = MutableLiveData<String>()
+    internal val allChucks: LiveData<List<ChuckResult>> = chuckTasksRepository.readAllDataChuck()
+    private var allChucksDelete = MutableLiveData<String>()
 
     fun coroutineGetChuck() = viewModelScope.launch(Dispatchers.Default) {
-        _chuckId.postValue(tasksRepositoryChuck.getChuck().id)
+        _chuckId.postValue(chuckTasksRepository.getChuck().id)
     }
 
     fun coroutineDeleteChuck() = viewModelScope.launch(Dispatchers.Default) {
-        allChucksDelete.postValue(tasksRepositoryChuck.deleteAllChucks().toString())
+        allChucksDelete.postValue(chuckTasksRepository.deleteAllChucks().toString())
     }
 }

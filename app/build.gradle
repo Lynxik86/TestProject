@@ -4,6 +4,7 @@ plugins {
 }
 
 apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
 
 android {
     compileSdk 32
@@ -16,8 +17,6 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-
     }
 
     packagingOptions {
@@ -46,9 +45,7 @@ kapt {
     correctErrorTypes true
 }
 
-/*kapt {
-    correctErrorTypes true
-}*/
+
 
 dependencies {
 
@@ -97,15 +94,15 @@ dependencies {
 
     //Hilt
     implementation 'com.google.dagger:hilt-android:2.41'
-    annotationProcessor 'com.google.dagger:hilt-compiler:2.41'
+    kapt 'com.google.dagger:hilt-compiler:2.41'
 
     // For instrumentation tests
-    androidTestImplementation 'com.google.dagger:hilt-android-testing:2.41'
-    androidTestAnnotationProcessor 'com.google.dagger:hilt-compiler:2.41'
+    androidTestImplementation  'com.google.dagger:hilt-android-testing:2.41'
+    kaptAndroidTest 'com.google.dagger:hilt-compiler:2.41'
 
     // For local unit tests
     testImplementation 'com.google.dagger:hilt-android-testing:2.41'
-    testAnnotationProcessor 'com.google.dagger:hilt-compiler:2.41'
+    kaptTest 'com.google.dagger:hilt-compiler:2.41'
 
     //CardView
     implementation "androidx.cardview:cardview:1.0.0"

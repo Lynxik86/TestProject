@@ -4,41 +4,49 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.android_dev.db.MyTestDb
-import com.example.android_dev.model.FormResult
-import com.example.android_dev.repository.TasksRepositoryRegister
+import com.example.android_dev.data.local.ConnectDb
+import com.example.android_dev.data.model.FormResult
+import com.example.android_dev.repository.RegisterTasksRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 val FIRSTNAME_REGEX = Regex("^[a-zA-Z][a-zA-Z0-9]{1,10}$")
 val LASTNAME_REGEX = Regex("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#\$%^&*]{6,}$")
 val MAIL_REGEX = Regex("^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}\$")
 val PHONE_REGEX = Regex("^\\+3\\d{11}$")
 
-class RegistryViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class RegistryViewModel @Inject constructor (
+    application: Application,
+    private val registerTasksRepository: RegisterTasksRepository
+    ) : AndroidViewModel(application) {
 
-    /*private val tasksRepositoryRegister: TasksRepositoryRegister =
-        TasksRepositoryRegister(
+
+   /* private val registerTasksRepository: RegisterTasksRepository =
+        RegisterTasksRepository(
            MyTestDb.getDatabase(application).formResultDao()
         )*/
 
-    private val tasksRepositoryRegister: TasksRepositoryRegister =
-        TasksRepositoryRegister.getInstance(MyTestDb.getDatabase(application))
+   /* private val registerTasksRepository: RegisterTasksRepository =
+        RegisterTasksRepository.getInstance(ConnectDb.getDatabase(application))*/
 
     // private val formResultDao = MyTestDb.getDatabase(application).formResultDao()
 
     internal var errorMessage = MutableLiveData<String?>()
     internal var successfulLogin = MutableLiveData<Boolean>()
-    internal var allFormDelete = MutableLiveData<String>()
+    private var allFormDelete = MutableLiveData<String>()
 
     fun coroutineDeleteForm() = viewModelScope.launch(Dispatchers.Default) {
-        allFormDelete.postValue(tasksRepositoryRegister.deleteAllNotAdmin().toString())
+        allFormDelete.postValue(registerTasksRepository.deleteAllNotAdmin().toString())
     }
 
     fun checkCredentials(firstname: String, password: String) =
         viewModelScope.launch(Dispatchers.Default) {
 
-            val formResult = tasksRepositoryRegister.getFormResultByLogin(firstname)
+            val formResult = registerTasksRepository.getFormResultByLogin(firstname)
             when {
                 formResult?.first_name.isNullOrEmpty() -> {
                     errorMessage.postValue("There is no such user")
@@ -81,7 +89,7 @@ class RegistryViewModel(application: Application) : AndroidViewModel(application
     fun writeRegistryData(firstname: String, lastname: String, email: String, phone: String) {
         val formResult =
             FormResult(first_name = firstname, last_name = lastname, email = email, phone = phone)
-        tasksRepositoryRegister.addFormResult(formResult)
+        registerTasksRepository.addFormResult(formResult)
     }
 
     /* fun writeRegistryData(firstname: String, lastname: String, email: String, phone: String) {
