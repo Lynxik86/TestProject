@@ -21,6 +21,7 @@ class RecyclerJokeAdapter(private val jokes: List<JokeResult>, private val itemC
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textView: TextView = itemView.findViewById(R.id.item_text)
+        val button: View = itemView.findViewById(R.id.buttonDelete)
     }
 
     override fun getItemCount(): Int {
@@ -35,7 +36,10 @@ class RecyclerJokeAdapter(private val jokes: List<JokeResult>, private val itemC
         //holder.itemView.setSelected(selectedPos == position)
         val item = jokes[position].joke
         Log.i("Joke position ", jokes[position].toString())
-        holder.itemView.setOnClickListener{
-            itemClickListener.onItemClickListener(item)}
-    }
+        holder.button.setOnClickListener {
+            itemClickListener.onItemClickListener(item)
+        }
+        /*holder.itemView.setOnClickListener{
+            itemClickListener.onItemClickListener(item)}*/
+   }
 }

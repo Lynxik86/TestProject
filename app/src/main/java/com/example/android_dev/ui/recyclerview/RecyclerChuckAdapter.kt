@@ -21,6 +21,7 @@ class RecyclerChuckAdapter(private val chuck: List<ChuckResult>, private val ite
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textView: TextView = itemView.findViewById(R.id.item_text)
+        val button: View = itemView.findViewById(R.id.buttonDelete)
     }
 
     override fun getItemCount(): Int {
@@ -31,8 +32,9 @@ class RecyclerChuckAdapter(private val chuck: List<ChuckResult>, private val ite
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.textView.text = chuck[position].id
         val item = chuck[position].id
-        Log.i("Chuck value", chuck[position].toString())
-        holder.itemView.setOnClickListener{
-            itemClickListener.onItemClickListener(item) }
-    }
+        holder.button.setOnClickListener {
+            itemClickListener.onItemClickListener(item)
+        }
+   }
+
 }

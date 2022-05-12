@@ -22,7 +22,6 @@ import kotlinx.coroutines.Job
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.Dispatchers as CoroutinesDispatchers
 
-
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
@@ -66,11 +65,6 @@ class FirstFragment : Fragment(), CoroutineScope, ItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /*  val nameObserver = Observer<List<ChuckResult>> { chuck ->
-        // Update the UI, in this case, a TextView.
-        binding.textviewFirst.text =  chuck[0].id
-        }*/
-
         // Get the view model
         /* viewModelChuck = ViewModelProvider(this)[ChuckViewModel::class.java]
          jokesViewModel = ViewModelProvider(this)[JokeViewModel::class.java]*/
@@ -107,6 +101,7 @@ class FirstFragment : Fragment(), CoroutineScope, ItemClickListener {
                      }
                  }*/
         }
+
 
     }
 
@@ -147,6 +142,7 @@ class FirstFragment : Fragment(), CoroutineScope, ItemClickListener {
         //Toast.makeText(requireContext(),"Cell clicked", Toast.LENGTH_SHORT).show()
         deleteJokeResult(item)
         deleteChuckResult(item)
+
     }
 
     private fun deleteChuckResult(item: String) {
@@ -154,10 +150,10 @@ class FirstFragment : Fragment(), CoroutineScope, ItemClickListener {
 
     }
 
-    /*   override fun onJokeClickListener(joke: String) {
+    /*override fun onJokeClickListener(joke: String) {
            //Toast.makeText(requireContext(),"Cell clicked", Toast.LENGTH_SHORT).show()
            deleteJokeResult(joke)
-       }*/
+    }*/
 
     private fun deleteJokeResult(item: String) {
         jokesViewModel.coroutineDeleteJokeResult(item)
