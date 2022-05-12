@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android_dev.R
 import com.example.android_dev.databinding.FragmentFirstBinding
+import com.example.android_dev.ui.recyclerview.ItemClickListener
 import com.example.android_dev.ui.recyclerview.RecyclerChuckAdapter
 import com.example.android_dev.ui.recyclerview.RecyclerJokeAdapter
 import com.example.android_dev.viewmodel.ChuckViewModel
@@ -26,7 +27,7 @@ import kotlinx.coroutines.Dispatchers as CoroutinesDispatchers
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 @AndroidEntryPoint
-class FirstFragment : Fragment(), CoroutineScope {
+class FirstFragment : Fragment(), CoroutineScope, ItemClickListener {
     private var firstFragmentJob: Job? = null
         get() {
             if (field == null) {
@@ -45,8 +46,8 @@ class FirstFragment : Fragment(), CoroutineScope {
     // onDestroyView.
     private val binding get() = _binding!!
 
-   /* private lateinit var viewModelChuck: ChuckViewModel
-    private lateinit var jokesViewModel: JokeViewModel*/
+    /* private lateinit var viewModelChuck: ChuckViewModel
+     private lateinit var jokesViewModel: JokeViewModel*/
 
     private val chuckViewModel: ChuckViewModel by viewModels()
     private val jokesViewModel: JokeViewModel by viewModels()
@@ -71,10 +72,8 @@ class FirstFragment : Fragment(), CoroutineScope {
         }*/
 
         // Get the view model
-       /* viewModelChuck = ViewModelProvider(this)[ChuckViewModel::class.java]
-        jokesViewModel = ViewModelProvider(this)[JokeViewModel::class.java]*/
-
-
+        /* viewModelChuck = ViewModelProvider(this)[ChuckViewModel::class.java]
+         jokesViewModel = ViewModelProvider(this)[JokeViewModel::class.java]*/
 
         val popupMenu = PopupMenu(requireContext(), binding.textviewFirst)
         popupMenu.inflate(R.menu.pop_up_menu)
@@ -89,13 +88,12 @@ class FirstFragment : Fragment(), CoroutineScope {
             popupMenu.show()
         }
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        binding.buttonSecond.setOnClickListener {
+        binding.buttonAddChuck.setOnClickListener {
             chuckViewModel.coroutineGetChuck()
         }
 
-        binding.buttonFirst.setOnClickListener {
+        binding.buttonAddJokes.setOnClickListener {
             jokesViewModel.coroutineGetJoke()
-
 
             //запуск новой сопрограммы в фоне
             //сопрограммы - это легковесные потоки. Они запускаются с помощью билдера сопрограмм launch в контексте некоторого CoroutineScope. В примере выше мы запускаем новую сопрограмму в GlobalScope.
@@ -109,9 +107,10 @@ class FirstFragment : Fragment(), CoroutineScope {
                      }
                  }*/
         }
+
     }
 
-    private fun popUpUpdate(popupMenu:PopupMenu) {
+    private fun popUpUpdate(popupMenu: PopupMenu) {
 
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
@@ -125,7 +124,7 @@ class FirstFragment : Fragment(), CoroutineScope {
                 }
                 else -> false
             }
-         }
+        }
     }
 
     private fun deleteDBChuck() {
@@ -144,6 +143,26 @@ class FirstFragment : Fragment(), CoroutineScope {
         binding.recyclerView.layoutManager = linearLayoutManager
     }
 
+    override fun onItemClickListener(item: String) {
+        //Toast.makeText(requireContext(),"Cell clicked", Toast.LENGTH_SHORT).show()
+        deleteJokeResult(item)
+        deleteChuckResult(item)
+    }
+
+    private fun deleteChuckResult(item: String) {
+        chuckViewModel.coroutineDeleteChuckResult(item)
+
+    }
+
+    /*   override fun onJokeClickListener(joke: String) {
+           //Toast.makeText(requireContext(),"Cell clicked", Toast.LENGTH_SHORT).show()
+           deleteJokeResult(joke)
+       }*/
+
+    private fun deleteJokeResult(item: String) {
+        jokesViewModel.coroutineDeleteJokeResult(item)
+    }
+
     private fun observeViews() {
         jokesViewModel._jokeId.observe(viewLifecycleOwner) { jokeId ->
             binding.textviewFirst.text = jokeId
@@ -155,12 +174,12 @@ class FirstFragment : Fragment(), CoroutineScope {
 
         chuckViewModel.allChucks.observe(viewLifecycleOwner) { chucks ->
             // Data bind the recycler view
-            binding.recyclerView.adapter = RecyclerChuckAdapter(chucks)
+            binding.recyclerView.adapter = RecyclerChuckAdapter(chucks, this)
         }
 
         jokesViewModel.allJokes.observe(viewLifecycleOwner) { jokes ->
             // Data bind the recycler view
-            binding.recyclerView.adapter = RecyclerJokeAdapter(jokes)
+            binding.recyclerView.adapter = RecyclerJokeAdapter(jokes, this)
         }
     }
 
@@ -171,4 +190,6 @@ class FirstFragment : Fragment(), CoroutineScope {
         _binding = null
 
     }
+
+
 }

@@ -1,6 +1,8 @@
 package com.example.android_dev.di
 
+import android.app.Application
 import android.content.Context
+import androidx.lifecycle.AndroidViewModel
 import androidx.room.Room
 import com.example.android_dev.data.local.ConnectDb
 import com.example.android_dev.data.local.dao.ChuckDao
@@ -14,11 +16,14 @@ import com.example.android_dev.network.interfaces.ChuckApi
 import com.example.android_dev.network.interfaces.JokeApi
 import com.example.android_dev.repository.ChuckTasksRepository
 import com.example.android_dev.repository.JokeTasksRepository
+import com.example.android_dev.viewmodel.ChuckViewModel
+import com.example.android_dev.viewmodel.JokeViewModel
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -150,5 +155,9 @@ object AppModule {
     fun provideChuckApi(apiManager: ApiManager): ChuckApi {
         return apiManager.getChuckApi()
     }
+
+
+
+
 
 }

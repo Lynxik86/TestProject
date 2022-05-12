@@ -2,10 +2,8 @@ package com.example.android_dev.repository
 
 import androidx.lifecycle.LiveData
 import com.example.android_dev.data.local.localdatasource.JokeLocalDataSource
-import com.example.android_dev.data.local.ConnectDb
-import com.example.android_dev.data.remote.remotedatasource.JokeRemoteDataSource
 import com.example.android_dev.data.model.JokeResult
-import com.example.android_dev.data.remote.ApiManager
+import com.example.android_dev.data.remote.remotedatasource.JokeRemoteDataSource
 import com.example.android_dev.repository.source.JokeDataSource
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -51,6 +49,10 @@ class JokeTasksRepository
 
     override suspend fun deleteAllJokes(){
         jokeLocalDataSource.deleteJokes()
+    }
+
+    override suspend fun deleteJokeResult(joke:String){
+        jokeLocalDataSource.deleteJoke(joke)
     }
 
 }

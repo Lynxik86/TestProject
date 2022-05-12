@@ -31,4 +31,9 @@
     <string name="success">Success!!</string>
     <string name="updatechuk">UpdateChuck</string>
     <string name="updatejoke">UpdateJoke</string>
+    <string name="delete_chuk">Delete Chuk</string>
+    <string name="delete_joke">Delete Joke</string>
+    <string name="delete_chuck">Delete Chuck</string>
+    <string name="delete_field">Delete field</string>
+    <string name="delete_all">Delete All!</string>
 </resources>

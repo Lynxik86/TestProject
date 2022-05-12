@@ -5,11 +5,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.android_dev.data.local.ConnectDb
 import com.example.android_dev.data.model.ChuckResult
 import com.example.android_dev.repository.ChuckTasksRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -29,6 +27,7 @@ class ChuckViewModel @Inject constructor (
     internal var _chuckId = MutableLiveData<String>()
     internal val allChucks: LiveData<List<ChuckResult>> = chuckTasksRepository.readAllDataChuck()
     private var allChucksDelete = MutableLiveData<String>()
+    private var chuckResultDelete = MutableLiveData<String>()
 
     fun coroutineGetChuck() = viewModelScope.launch(Dispatchers.Default) {
         _chuckId.postValue(chuckTasksRepository.getChuck().id)
@@ -36,5 +35,9 @@ class ChuckViewModel @Inject constructor (
 
     fun coroutineDeleteChuck() = viewModelScope.launch(Dispatchers.Default) {
         allChucksDelete.postValue(chuckTasksRepository.deleteAllChucks().toString())
+    }
+
+    fun coroutineDeleteChuckResult(chuck:String) = viewModelScope.launch(Dispatchers.Default) {
+        chuckResultDelete.postValue(chuckTasksRepository.deleteChuckResult(chuck).toString())
     }
 }

@@ -46,6 +46,10 @@ class ChuckTasksRepository @Inject internal constructor(//val connectDb: Connect
     override suspend fun deleteAllChucks(){
         chuckLocalDataSource.deleteChucks()
     }
+
+    override suspend fun deleteChuckResult(chuck:String){
+        chuckLocalDataSource.deleteChuck(chuck)
+    }
 }
 
 /* companion object {

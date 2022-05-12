@@ -20,5 +20,6 @@ interface ChuckDao {
     @Query("DELETE FROM chuck_table")
     suspend fun deleteAll()
 
-
+    @Query("DELETE FROM chuck_table where id=:id")
+    suspend fun deleteChuckResult(id: String)
 }

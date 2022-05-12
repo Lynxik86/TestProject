@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.android_dev.R
 import com.example.android_dev.data.model.JokeResult
 
-class RecyclerJokeAdapter(private val jokes: List<JokeResult>) :
+
+class RecyclerJokeAdapter(private val jokes: List<JokeResult>, private val itemClickListener: ItemClickListener):
     RecyclerView.Adapter<RecyclerJokeAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -19,9 +20,8 @@ class RecyclerJokeAdapter(private val jokes: List<JokeResult>) :
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val textView: TextView = itemView.findViewById(R.id.item_jokes_text)
+        val textView: TextView = itemView.findViewById(R.id.item_text)
     }
-
 
     override fun getItemCount(): Int {
         Log.d("Adapter Size ", jokes.size.toString())
@@ -30,7 +30,12 @@ class RecyclerJokeAdapter(private val jokes: List<JokeResult>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         //   h.bindItems(chuck.value!!?.get(position))
-        holder.textView.text = jokes[position].joke
 
+        holder.textView.text = jokes[position].joke
+        //holder.itemView.setSelected(selectedPos == position)
+        val item = jokes[position].joke
+        Log.i("Joke position ", jokes[position].toString())
+        holder.itemView.setOnClickListener{
+            itemClickListener.onItemClickListener(item)}
     }
 }

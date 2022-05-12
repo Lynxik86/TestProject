@@ -24,4 +24,10 @@ class ChuckLocalDataSource @Inject constructor(
     suspend fun deleteChucks() {
         chuckDao.deleteAll()
     }
+
+    suspend fun deleteChuck(chuck:String){
+
+        chuckDao.deleteChuckResult(chuck)
+
+    }
 }

@@ -19,5 +19,6 @@ interface JokeDao {
     @Query("DELETE FROM joke_table")
     suspend fun deleteAll()
 
-
+    @Query("DELETE FROM joke_table where joke=:joke")
+    suspend fun deleteJokeResult(joke: String)
 }

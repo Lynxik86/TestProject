@@ -27,4 +27,10 @@ class JokeLocalDataSource
     suspend fun deleteJokes() {
         jokeDao.deleteAll()
     }
+
+    suspend fun deleteJoke(joke:String){
+
+        jokeDao.deleteJokeResult(joke)
+
+    }
 }

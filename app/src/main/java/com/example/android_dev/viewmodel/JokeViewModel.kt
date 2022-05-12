@@ -34,6 +34,8 @@ class JokeViewModel @Inject constructor (
 
     var _jokeId = MutableLiveData<String>()
 
+    private var jokeResultDelete = MutableLiveData<String>()
+
 
     fun coroutineGetJoke() = viewModelScope.launch(Dispatchers.Default) {
         _jokeId.postValue(jokeTasksRepository.getJokes().joke)
@@ -41,6 +43,10 @@ class JokeViewModel @Inject constructor (
 
     fun coroutineDeleteJokes() = viewModelScope.launch(Dispatchers.Default) {
         allJokesDelete.postValue(jokeTasksRepository.deleteAllJokes().toString())
+    }
+
+    fun coroutineDeleteJokeResult(joke:String) = viewModelScope.launch(Dispatchers.Default) {
+        jokeResultDelete.postValue(jokeTasksRepository.deleteJokeResult(joke).toString())
     }
 }
 

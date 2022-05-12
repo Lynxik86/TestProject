@@ -7,11 +7,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android_dev.R
-import com.example.android_dev.R.id.item_jokes_text
 import com.example.android_dev.data.model.ChuckResult
 
 
-class RecyclerChuckAdapter(private val chuck: List<ChuckResult>) :
+class RecyclerChuckAdapter(private val chuck: List<ChuckResult>, private val itemClickListener: ItemClickListener):
     RecyclerView.Adapter<RecyclerChuckAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -21,7 +20,7 @@ class RecyclerChuckAdapter(private val chuck: List<ChuckResult>) :
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val textView: TextView = itemView.findViewById(item_jokes_text)
+        val textView: TextView = itemView.findViewById(R.id.item_text)
     }
 
     override fun getItemCount(): Int {
@@ -30,8 +29,10 @@ class RecyclerChuckAdapter(private val chuck: List<ChuckResult>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
         holder.textView.text = chuck[position].id
-
+        val item = chuck[position].id
+        Log.i("Chuck value", chuck[position].toString())
+        holder.itemView.setOnClickListener{
+            itemClickListener.onItemClickListener(item) }
     }
 }

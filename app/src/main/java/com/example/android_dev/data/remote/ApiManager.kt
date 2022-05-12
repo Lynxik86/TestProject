@@ -11,8 +11,8 @@ import javax.inject.Singleton
 const val JOKE_BASE_URL = "https://icanhazdadjoke.com/"
 const val CHUCK_BASE_URL = "https://api.chucknorris.io/"
 
-@Singleton
-class ApiManager @Inject constructor(
+
+class ApiManager  constructor(
     private val gsonConverterFactory: GsonConverterFactory,
     private val client: OkHttpClient
 ) {
