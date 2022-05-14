@@ -5,11 +5,10 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.android_dev.data.local.ConnectDb
 import com.example.android_dev.data.model.JokeResult
 import com.example.android_dev.repository.JokeTasksRepository
+import com.example.android_dev.ui.recyclerview.RecyclerJokeAdapter
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -35,7 +34,6 @@ class JokeViewModel @Inject constructor (
     var _jokeId = MutableLiveData<String>()
 
     private var jokeResultDelete = MutableLiveData<String>()
-
 
     fun coroutineGetJoke() = viewModelScope.launch(Dispatchers.Default) {
         _jokeId.postValue(jokeTasksRepository.getJokes().joke)

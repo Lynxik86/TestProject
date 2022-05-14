@@ -10,7 +10,7 @@ import com.example.android_dev.R
 import com.example.android_dev.data.model.JokeResult
 
 
-class RecyclerJokeAdapter(private val jokes: List<JokeResult>, private val itemClickListener: ItemClickListener):
+class RecyclerJokeAdapter(private val jokes: List<JokeResult>, private val buttonClickListener: ButtonClickListener, private val itemClickListener: ItemClickListener):
     RecyclerView.Adapter<RecyclerJokeAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -37,9 +37,9 @@ class RecyclerJokeAdapter(private val jokes: List<JokeResult>, private val itemC
         val item = jokes[position].joke
         Log.i("Joke position ", jokes[position].toString())
         holder.button.setOnClickListener {
-            itemClickListener.onItemClickListener(item)
+            buttonClickListener.onButtonClickListener(item)
         }
-        /*holder.itemView.setOnClickListener{
-            itemClickListener.onItemClickListener(item)}*/
+        holder.itemView.setOnClickListener{
+            itemClickListener.onItemClickListener(item)}
    }
 }

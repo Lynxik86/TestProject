@@ -24,10 +24,17 @@
         android:name="com.example.android_dev.ui.fragments.FirstFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_first">
-
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_ItemFragment"
+            app:destination="@id/ItemFragment">
+            <argument
+                android:name="item"
+                android:defaultValue="joke"
+                app:argType="string" />
+        </action>
     </fragment>
 
 
@@ -40,6 +47,21 @@
         <action
             android:id="@+id/action_ThirdFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/ItemFragment"
+        android:name="com.example.android_dev.ui.fragments.ItemFragment"
+        android:label="item_fragment"
+        tools:layout="@layout/fragment_item">
+        <action
+            android:id="@+id/action_ItemFragment_to_FirstFragment"
+            app:destination="@id/FirstFragment">
+            <argument
+                android:name="item"
+                android:defaultValue="joke"
+                app:argType="string" />
+        </action>
     </fragment>
 
 </navigation>

@@ -36,4 +36,7 @@
     <string name="delete_chuck">Delete Chuck</string>
     <string name="delete_field">Delete field</string>
     <string name="delete_all">Delete All!</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="joke_text">Joke text</string>
 </resources>
