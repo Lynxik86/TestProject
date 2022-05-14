@@ -35,6 +35,8 @@ class RecyclerChuckAdapter(private val chuck: List<ChuckResult>, private val ite
         holder.button.setOnClickListener {
             itemClickListener.onItemClickListener(item)
         }
+        holder.itemView.setOnClickListener{
+            itemClickListener.onItemClickListener(item)}
    }
 
 }

@@ -155,8 +155,8 @@ class FirstFragment : Fragment(), CoroutineScope, ButtonClickListener, ItemClick
 
 
 
-        findNavController().navigate(action)
-        findNavController().navigate(R.id.action_FirstFragment_to_ItemFragment)
+        findNavController().navigate(directions = action)
+       // findNavController().navigate(R.id.action_FirstFragment_to_ItemFragment)
         /*val fr = parentFragmentManager.beginTransaction()
         fr.replace(R.id.fr1, ItemFragment())
         fr.addToBackStack(null)

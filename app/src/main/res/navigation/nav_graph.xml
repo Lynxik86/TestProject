@@ -57,10 +57,10 @@
         <action
             android:id="@+id/action_ItemFragment_to_FirstFragment"
             app:destination="@id/FirstFragment">
-            <argument
+           <!-- <argument
                 android:name="item"
                 android:defaultValue="joke"
-                app:argType="string" />
+                app:argType="string" />-->
         </action>
     </fragment>
 

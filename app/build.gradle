@@ -14,14 +14,6 @@ apply plugin: 'dagger.hilt.android.plugin'
 
 android {
 
-    sourceSets {
-        main {
-            kotlin {
-               srcDirs += 'build/generated/source/navigation-args/'
-      //          srcDirs += 'build/generated/source/navigation-args/debug/com/example/android_dev/ui/fragments'
-            }
-        }}
-
     compileSdk 32
 
     defaultConfig {
