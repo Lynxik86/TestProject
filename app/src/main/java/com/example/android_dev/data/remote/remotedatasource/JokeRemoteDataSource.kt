@@ -8,7 +8,7 @@ class JokeRemoteDataSource
 @Inject constructor(
     private val jokeApi: JokeApi
 ) {
-
+    // fun getJokeResult(): JokeResult {
     suspend fun getJokeResult(): JokeResult {
         return jokeApi.randomJoke()
     }

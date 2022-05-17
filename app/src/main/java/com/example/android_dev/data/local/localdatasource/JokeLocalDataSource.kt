@@ -15,7 +15,8 @@ class JokeLocalDataSource
         return jokeDao.readAllData()
     }
 
-    suspend fun postJoke(jokeResult: JokeResult): JokeResult {
+    fun postJoke(jokeResult: JokeResult): JokeResult {
+  //  suspend fun postJoke(jokeResult: JokeResult): JokeResult {
 
         jokeDao.addRandomJoke(jokeResult)
         //Send an INFO log message.

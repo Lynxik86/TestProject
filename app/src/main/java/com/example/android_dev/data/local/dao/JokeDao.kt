@@ -11,7 +11,8 @@ import com.example.android_dev.data.model.JokeResult
 interface JokeDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addRandomJoke(joke: JokeResult)
+   // suspend fun addRandomJoke(joke: JokeResult)
+    fun addRandomJoke(joke: JokeResult)
 
     @Query("SELECT * FROM joke_table")
     fun readAllData(): LiveData<List<JokeResult>>

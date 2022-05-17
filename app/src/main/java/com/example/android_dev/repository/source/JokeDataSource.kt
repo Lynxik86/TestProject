@@ -8,7 +8,7 @@ interface JokeDataSource {
     fun readAllDataJokes(): LiveData<List<JokeResult>>
 
     suspend fun getJokes(): JokeResult
-
+   //fun getJokes(): JokeResult
     suspend fun deleteAllJokes()
 
     suspend fun deleteJokeResult(joke: String)
