@@ -7,12 +7,10 @@
     <string name="third_fragment_label">Third Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="dad_jokes">Dad jokes</string>
     <string name="chuck_norris_facts">Chuck Norris facts</string>
-
     <string name="register">Register</string>
     <string name="login_text">Логин:</string>
     <string name="login_edit">Введите логин</string>
@@ -26,17 +24,14 @@
     <string name="first_name_form">First name*</string>
     <string name="last_name_form">Last name*</string>
     <string name="email_address">Email address*</string>
-    <string name="number_phone">+00-000-000 0000*</string>
+    <string name="number_phone">+00–000–000 0000</string>
     <string name="button_register">Register</string>
     <string name="success">Success!!</string>
-    <string name="updatechuk">UpdateChuck</string>
+    <string name="updatechuck">UpdateChuck</string>
     <string name="updatejoke">UpdateJoke</string>
-    <string name="delete_chuk">Delete Chuk</string>
-    <string name="delete_joke">Delete Joke</string>
     <string name="delete_chuck">Delete Chuck</string>
+    <string name="delete_joke">Delete Joke</string>
     <string name="delete_field">Delete field</string>
     <string name="delete_all">Delete All!</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="joke_text">Joke text</string>
 </resources>

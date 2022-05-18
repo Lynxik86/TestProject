@@ -5,6 +5,8 @@ import com.example.android_dev.data.local.localdatasource.JokeLocalDataSource
 import com.example.android_dev.data.model.JokeResult
 import com.example.android_dev.data.remote.remotedatasource.JokeRemoteDataSource
 import com.example.android_dev.repository.source.JokeDataSource
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -36,11 +38,10 @@ class JokeTasksRepository
             RetrofitClient.getJokeApi()
         )*/
 
-    override fun readAllDataJokes(): LiveData<List<JokeResult>> {
+    override fun readAllDataJokes():Flow<List<JokeResult>> {
         return jokeLocalDataSource.readJokeResult()
-
     }
-   // override  fun getJokes(): JokeResult {
+
     override suspend fun getJokes(): JokeResult {
 
         val jokeResult = jokeRemoteDataSource.getJokeResult()

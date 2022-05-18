@@ -10,7 +10,7 @@ import com.example.android_dev.R
 import com.example.android_dev.data.model.ChuckResult
 
 
-class RecyclerChuckAdapter(private val chuck: List<ChuckResult>, private val itemClickListener: ItemClickListener):
+class RecyclerChuckAdapter(private val chuck: List<ChuckResult>,  private val buttonClickListener: ButtonClickListener, private val itemClickListener: ItemClickListener):
     RecyclerView.Adapter<RecyclerChuckAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -33,7 +33,7 @@ class RecyclerChuckAdapter(private val chuck: List<ChuckResult>, private val ite
         holder.textView.text = chuck[position].id
         val item = chuck[position].id
         holder.button.setOnClickListener {
-            itemClickListener.onItemClickListener(item)
+            buttonClickListener.onButtonClickListener(item)
         }
         holder.itemView.setOnClickListener{
             itemClickListener.onItemClickListener(item)}

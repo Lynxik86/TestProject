@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.android_dev.data.local.dao.JokeDao
 import com.example.android_dev.data.model.JokeResult
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 class JokeLocalDataSource
@@ -11,13 +13,11 @@ class JokeLocalDataSource
     private val jokeDao: JokeDao
 ) {
 
-    fun readJokeResult(): LiveData<List<JokeResult>> {
+    fun readJokeResult(): Flow<List<JokeResult>> {
         return jokeDao.readAllData()
     }
 
-    fun postJoke(jokeResult: JokeResult): JokeResult {
-  //  suspend fun postJoke(jokeResult: JokeResult): JokeResult {
-
+    suspend fun postJoke(jokeResult: JokeResult): JokeResult {
         jokeDao.addRandomJoke(jokeResult)
         //Send an INFO log message.
         Log.i("JOKE", jokeResult.joke)
@@ -29,7 +29,7 @@ class JokeLocalDataSource
         jokeDao.deleteAll()
     }
 
-    suspend fun deleteJoke(joke:String){
+    suspend fun deleteJoke(joke: String) {
 
         jokeDao.deleteJokeResult(joke)
 

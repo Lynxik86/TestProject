@@ -9,7 +9,7 @@ interface JokeApi {
     @GET(".")
     //каждая функция должна быть помечен как отложенная (suspend). асинхронная работа
     suspend fun randomJoke(): JokeResult
-    //fun randomJoke(): JokeResult
+
 }
 
 
