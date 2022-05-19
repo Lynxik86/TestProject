@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.android_dev.data.model.ChuckResult
+import kotlinx.coroutines.flow.Flow
 
 
 @Dao
@@ -15,7 +16,7 @@ interface ChuckDao {
     fun addRandomChuck(chuck: ChuckResult)
 
     @Query("SELECT * FROM chuck_table")
-    fun readAllData(): LiveData<List<ChuckResult>>
+    fun readAllData(): Flow<List<ChuckResult>>
 
     @Query("DELETE FROM chuck_table")
     suspend fun deleteAll()

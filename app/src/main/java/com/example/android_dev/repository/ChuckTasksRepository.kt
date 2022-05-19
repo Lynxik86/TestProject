@@ -5,6 +5,7 @@ import com.example.android_dev.data.local.localdatasource.ChuckLocalDataSource
 import com.example.android_dev.data.model.ChuckResult
 import com.example.android_dev.data.remote.remotedatasource.ChuckRemoteDataSource
 import com.example.android_dev.repository.source.ChuckDataSource
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -34,7 +35,7 @@ class ChuckTasksRepository @Inject internal constructor(//val connectDb: Connect
             RetrofitClient.getChuckApi()
         )*/
 
-    override fun readAllDataChuck(): LiveData<List<ChuckResult>> {
+    override fun readAllDataChuck(): Flow<List<ChuckResult>> {
         return chuckLocalDataSource.readChuckResult()
     }
 

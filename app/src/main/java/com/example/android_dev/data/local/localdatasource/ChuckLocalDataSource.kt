@@ -4,13 +4,14 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.android_dev.data.local.dao.ChuckDao
 import com.example.android_dev.data.model.ChuckResult
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class ChuckLocalDataSource @Inject constructor(
     private val chuckDao: ChuckDao
 )
 {
-    fun readChuckResult(): LiveData<List<ChuckResult>> {
+    fun readChuckResult(): Flow<List<ChuckResult>> {
         return chuckDao.readAllData()
     }
 

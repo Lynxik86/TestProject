@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +25,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.Dispatchers as CoroutinesDispatchers
 
@@ -81,9 +85,9 @@ class FirstFragment : Fragment(), CoroutineScope, ButtonClickListener, ItemClick
         //deleteDBJoke()
         setupRecyclerView()
 
-        lifecycleScope.launchWhenCreated {
+       // lifecycleScope.launchWhenCreated {
             observeJoke()
-        }
+       // }
         observeChuck()
 
         binding.textviewFirst.setOnClickListener {
@@ -171,16 +175,20 @@ class FirstFragment : Fragment(), CoroutineScope, ButtonClickListener, ItemClick
         jokesViewModel.coroutineDeleteJokeResult(item)
     }
 
-    private suspend fun observeJoke() {
-        jokesViewModel._jokeId.collect { jokeId ->
-            binding.textviewFirst.text = jokeId
+    private fun observeJoke() {
+
+        lifecycleScope.launchWhenCreated {
+            jokesViewModel._jokeId.collect { jokeId ->
+                binding.textviewFirst.text = jokeId
+            }
         }
 
-        jokesViewModel.allJokes.collect { jokes ->
-            // Data bind the recycler view
-            binding.recyclerView.adapter =
-                RecyclerJokeAdapter(jokes, this, this)
-        }
+        jokesViewModel.allJokes.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach {
+                binding.recyclerView.adapter = RecyclerJokeAdapter(it, this, this)
+
+            }
+            .launchIn(lifecycleScope)
     }
 
     /* jokesViewModel._jokeId.observe(viewLifecycleOwner) { jokeId ->
@@ -192,14 +200,31 @@ class FirstFragment : Fragment(), CoroutineScope, ButtonClickListener, ItemClick
     }*/
 
     private fun observeChuck() {
-        chuckViewModel._chuckId.observe(viewLifecycleOwner) { chuckId ->
+
+        lifecycleScope.launchWhenCreated {
+            chuckViewModel._chuckId.collect { chuckId ->
+                binding.textviewFirst.text = chuckId
+            }
+        }
+
+        chuckViewModel.allChucks.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach {
+                binding.recyclerView.adapter = RecyclerChuckAdapter(it, this, this)
+
+            }
+            .launchIn(lifecycleScope)
+
+
+
+
+        /*chuckViewModel._chuckId.observe(viewLifecycleOwner) { chuckId ->
             binding.textviewFirst.text = chuckId
         }
 
         chuckViewModel.allChucks.observe(viewLifecycleOwner) { chucks ->
             // Data bind the recycler view
             binding.recyclerView.adapter = RecyclerChuckAdapter(chucks, this, this)
-        }
+        }*/
     }
 
     override fun onDestroyView() {
