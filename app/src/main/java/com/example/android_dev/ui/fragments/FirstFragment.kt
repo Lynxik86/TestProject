@@ -12,7 +12,6 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.android_dev.R
 import com.example.android_dev.databinding.FragmentFirstBinding
 import com.example.android_dev.ui.recyclerview.ButtonClickListener
@@ -60,6 +59,9 @@ class FirstFragment : Fragment(), CoroutineScope, ButtonClickListener, ItemClick
     private val chuckViewModel: ChuckViewModel by viewModels()
     private val jokesViewModel: JokeViewModel by viewModels()
 
+    lateinit var recyclerJokeAdapter: RecyclerJokeAdapter
+    lateinit var recyclerChuckAdapter: RecyclerChuckAdapter
+
     //вызывается в момент создания View и в нём инится сам layout
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -85,9 +87,8 @@ class FirstFragment : Fragment(), CoroutineScope, ButtonClickListener, ItemClick
         //deleteDBJoke()
         setupRecyclerView()
 
-       // lifecycleScope.launchWhenCreated {
-            observeJoke()
-       // }
+
+        observeJoke()
         observeChuck()
 
         binding.textviewFirst.setOnClickListener {
@@ -143,10 +144,14 @@ class FirstFragment : Fragment(), CoroutineScope, ButtonClickListener, ItemClick
 
     private fun setupRecyclerView() {
         // Specify layout for recycler view
-        val linearLayoutManager = LinearLayoutManager(
-            requireContext(), RecyclerView.VERTICAL, false
-        )
-        binding.recyclerView.layoutManager = linearLayoutManager
+        /*     val linearLayoutManager = LinearLayoutManager(
+                 requireContext(), RecyclerView.VERTICAL, false
+             )
+             binding.recyclerView.layoutManager = linearLayoutManager*/
+
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+        }
     }
 
     override fun onButtonClickListener(item: String) {
@@ -185,8 +190,10 @@ class FirstFragment : Fragment(), CoroutineScope, ButtonClickListener, ItemClick
 
         jokesViewModel.allJokes.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                binding.recyclerView.adapter = RecyclerJokeAdapter(it, this, this)
-
+                //  binding.recyclerView.adapter = RecyclerJokeAdapter(it, this, this)
+                recyclerJokeAdapter = RecyclerJokeAdapter(it, this, this)
+                binding.recyclerView.adapter = recyclerJokeAdapter
+                recyclerJokeAdapter.submitList(it)
             }
             .launchIn(lifecycleScope)
     }
@@ -209,13 +216,13 @@ class FirstFragment : Fragment(), CoroutineScope, ButtonClickListener, ItemClick
 
         chuckViewModel.allChucks.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                binding.recyclerView.adapter = RecyclerChuckAdapter(it, this, this)
+                recyclerChuckAdapter = RecyclerChuckAdapter(it, this, this)
+                binding.recyclerView.adapter = recyclerChuckAdapter
+                recyclerChuckAdapter.submitList(it)
+               /* binding.recyclerView.adapter = RecyclerChuckAdapter(it, this, this)*/
 
             }
             .launchIn(lifecycleScope)
-
-
-
 
         /*chuckViewModel._chuckId.observe(viewLifecycleOwner) { chuckId ->
             binding.textviewFirst.text = chuckId

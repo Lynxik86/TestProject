@@ -99,6 +99,10 @@ dependencies {
   /*  //for kotlin based projects (where $room_version is the version of room you're using)
     kapt "android.arch.persistence.room:compiler:2.4.2"*/
 
+
+    //RecycleView
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+
     // Lifecycle components
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
