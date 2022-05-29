@@ -2,7 +2,6 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-android'
-    //id("androidx.navigation.safeargs.kotlin")
     id 'androidx.navigation.safeargs.kotlin'
 }
 
@@ -15,19 +14,12 @@ android {
 
     defaultConfig {
         applicationId "com.example.android_dev"
-        minSdk 26
+        minSdkVersion 21
         targetSdk 32
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-       /* javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = ["room.schemaLocation":
-                                     "$projectDir/schemas".toString()]
-            }
-        }*/
     }
 
     packagingOptions {
@@ -43,12 +35,19 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = "1.8"
+        useIR = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.0.1'
+        kotlinCompilerVersion '1.0.1'
     }
     buildFeatures {
         viewBinding true
+        compose true
     }
 
     kapt {
@@ -65,7 +64,6 @@ android {
 dependencies {
 
     // Kotlin components
-    // implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2"
 
@@ -73,7 +71,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.4.1'
 
     implementation 'com.google.android.material:material:1.6.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     //RecycleView
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     // Navigation Component
@@ -85,23 +83,20 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
-    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.google.code.gson:gson:2.9.0'
 
     // Room components
     implementation "androidx.room:room-runtime:2.4.2"
-    implementation 'androidx.databinding:databinding-runtime:7.2.0'
+    implementation 'androidx.databinding:databinding-runtime:7.2.1'
     implementation 'com.android.support.constraint:constraint-layout:2.0.4'
     implementation 'androidx.compose.ui:ui-graphics:1.1.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt "androidx.room:room-compiler:2.4.2"
     implementation "androidx.room:room-ktx:2.4.2"
     androidTestImplementation "androidx.room:room-testing:2.4.2"
-  /*  //for kotlin based projects (where $room_version is the version of room you're using)
-    kapt "android.arch.persistence.room:compiler:2.4.2"*/
-
 
     //RecycleView
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
     // Lifecycle components
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
@@ -131,4 +126,20 @@ dependencies {
 
     //CardView
     implementation "androidx.cardview:cardview:1.0.0"
+
+    //Jet Pack Compose
+    // Integration with activities
+    implementation 'androidx.activity:activity-compose:1.4.0'
+    // Compose Material Design
+    implementation 'androidx.compose.material:material:1.0.1'
+    // Animations
+    implementation 'androidx.compose.animation:animation:1.0.1'
+    // Tooling support (Previews, etc.)
+    implementation 'androidx.compose.ui:ui-tooling:1.0.1'
+    // Integration with ViewModels
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1'
+    // UI Tests
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.0.1'
+    // When using a AppCompat theme
+    implementation "com.google.accompanist:accompanist-appcompat-theme:0.16.0"
   }
