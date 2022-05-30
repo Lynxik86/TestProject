@@ -10,6 +10,7 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="dad_jokes">Dad jokes</string>
+    <string name="compose_delete_all">Delete All by Compose!</string>
     <string name="chuck_norris_facts">Chuck Norris facts</string>
     <string name="register">Register</string>
     <string name="login_text">Логин:</string>

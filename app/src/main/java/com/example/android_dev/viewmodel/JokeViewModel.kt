@@ -17,12 +17,15 @@ class JokeViewModel @Inject constructor(
     application: Application,
     private val jokeTasksRepository: JokeTasksRepository
 ) : AndroidViewModel(application) {
+    //////////////////////////////////////////////////////////
+    // Получение ссылки на объект репозитория без Hilt
     /* private val  jokeTasksRepository: JokeTasksRepository =
          JokeTasksRepository(MyTestDb.getDatabase(application))*/
 
     /* private val jokeTasksRepository: JokeTasksRepository =
          JokeTasksRepository.getInstance(ConnectDb.getDatabase(application))*/
-
+    /////////////////////////////////////////////////////////////////////
+    // Работа с потоками Flow
     internal val _jokeId = MutableStateFlow("")
 
     fun coroutineGetJoke() = viewModelScope.launch(Dispatchers.Default) {
@@ -41,7 +44,8 @@ class JokeViewModel @Inject constructor(
     fun coroutineDeleteJokes() = viewModelScope.launch(Dispatchers.Default) {
         allJokesDelete.emit(jokeTasksRepository.deleteAllJokes().toString())
     }
-
+    ///////////////////////////////////////////////////////////////////////////////
+    //Работа с LiveData
     /*
     internal val allJokes: LiveData<List<JokeResult>> =
         jokeTasksRepository.readAllDataJokes()

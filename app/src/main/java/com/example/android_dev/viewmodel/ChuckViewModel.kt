@@ -1,6 +1,9 @@
 package com.example.android_dev.viewmodel
 
 import android.app.Application
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,6 +15,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,9 +33,15 @@ class ChuckViewModel @Inject constructor (
 
     internal val _chuckId = MutableStateFlow("")
 
+
     fun coroutineGetChuck() = viewModelScope.launch(Dispatchers.Default) {
         _chuckId.emit(chuckTasksRepository.getChuck().id)
     }
+
+    /* internal val _chuckId = MutableStateFlow("")
+     fun coroutineGetChuck() = viewModelScope.launch(Dispatchers.Default) {
+         _chuckId.emit(chuckTasksRepository.getChuck().id)
+     }*/
 
     val allChucks: Flow<List<ChuckResult>> = chuckTasksRepository.readAllDataChuck()
 

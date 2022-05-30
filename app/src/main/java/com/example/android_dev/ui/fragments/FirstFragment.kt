@@ -5,11 +5,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.android_dev.R
@@ -20,10 +33,10 @@ import com.example.android_dev.ui.recyclerview.RecyclerChuckAdapter
 import com.example.android_dev.ui.recyclerview.RecyclerJokeAdapter
 import com.example.android_dev.viewmodel.ChuckViewModel
 import com.example.android_dev.viewmodel.JokeViewModel
+import com.google.android.material.composethemeadapter.MdcTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlin.coroutines.CoroutineContext
@@ -52,10 +65,13 @@ class FirstFragment : Fragment(), CoroutineScope, ButtonClickListener, ItemClick
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-
+    ///////////////////////////////////////////////////////
+    //Получение обекта вью модели
     /* private lateinit var viewModelChuck: ChuckViewModel
      private lateinit var jokesViewModel: JokeViewModel*/
 
+    ////////////////////////////////////////////////////////
+    //Получение объекта  вью модели с использованием LiveData
     private val chuckViewModel: ChuckViewModel by viewModels()
     private val jokesViewModel: JokeViewModel by viewModels()
 
@@ -76,17 +92,25 @@ class FirstFragment : Fragment(), CoroutineScope, ButtonClickListener, ItemClick
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.textviewFirst.setContent {
+
+            MdcTheme(context = requireContext()) {
+                ChuckObserveUpperView()
+                JokeObserveUpperView()
+            }
+        }
+
+
         // Get the view model
         /* viewModelChuck = ViewModelProvider(this)[ChuckViewModel::class.java]
          jokesViewModel = ViewModelProvider(this)[JokeViewModel::class.java]*/
 
+        //////////////////////////////////////////////////////////////////////
+
         val popupMenu = PopupMenu(requireContext(), binding.textviewFirst)
         popupMenu.inflate(R.menu.pop_up_menu)
 
-        //deleteDBChuck()
-        //deleteDBJoke()
         setupRecyclerView()
-
 
         observeJoke()
         observeChuck()
@@ -102,7 +126,8 @@ class FirstFragment : Fragment(), CoroutineScope, ButtonClickListener, ItemClick
 
         binding.buttonAddJokes.setOnClickListener {
             jokesViewModel.coroutineGetJoke()
-
+        //////////////////////////////////////////////////////////////
+        //ДО переноса в рамки архитектуры MVVM
             //запуск новой сопрограммы в фоне
             //сопрограммы - это легковесные потоки. Они запускаются с помощью билдера сопрограмм launch в контексте некоторого CoroutineScope. В примере выше мы запускаем новую сопрограмму в GlobalScope.
             // Это означает, что время жизни новой сопрограммы ограничено только временем жизни всего приложения.
@@ -116,6 +141,111 @@ class FirstFragment : Fragment(), CoroutineScope, ButtonClickListener, ItemClick
                  }*/
         }
     }
+
+    @Preview
+    @Composable
+    private fun ChuckObserveUpperView() {
+
+        val chuckId by remember { mutableStateOf("") }
+        Text(
+            text = chuckId,
+            fontSize = 12.sp,
+            color = Color.DarkGray,
+            textAlign = TextAlign.Center,
+            fontFamily = FontFamily.SansSerif,
+            modifier = Modifier.width(200.dp)
+        )
+       ChuckViewModelComposeView()
+
+    /*    ClickableText(
+            text = AnnotatedString("${chuckId}"),
+
+
+        onClick = { offset ->
+            val popupMenu = PopupMenu(requireContext(), binding.textviewFirst)
+            popupMenu.inflate(R.menu.pop_up_menu)
+            popUpUpdate(popupMenu)
+            popupMenu.show()
+        }
+
+        )*/
+    }
+
+    @Preview
+    @Composable
+    private fun JokeObserveUpperView(){
+
+        val jokeId by remember { mutableStateOf("") }
+        Text(
+            text = jokeId,
+            fontSize = 12.sp,
+            color = Color.DarkGray,
+            textAlign = TextAlign.Center,
+            fontFamily = FontFamily.SansSerif,
+            modifier = Modifier.width(200.dp)
+        )
+        JokeViewModelComposeView()
+    }
+
+    @Composable
+    fun JokeViewModelComposeView()
+    {
+       /* var chuckId by remember { mutableStateOf("") }
+
+        if (chuckId.isNotEmpty())
+        {
+            TextField(value = chuckId, onValueChange = {chuckId=""})
+
+        }*/
+        ResetAndClearTextField()
+
+        val viewModel: JokeViewModel = viewModel()
+        //val jokeId by viewModel._jokeId.observeAsState("")
+        val jokeId: String by viewModel._jokeId.collectAsState()
+        TextField(value = jokeId, onValueChange = { }, readOnly = true)
+
+
+    }
+
+
+    private @Composable
+    fun ResetAndClearTextField() {
+
+        var textFieldValue by remember { mutableStateOf(TextFieldValue("")) }
+
+        TextField(
+            value = textFieldValue,
+            onValueChange = { newText ->
+                textFieldValue = newText}
+        )
+    }
+
+
+
+
+
+    @Composable
+    fun ChuckViewModelComposeView() {
+
+      /*  var jokeId by remember { mutableStateOf("") }
+
+        if (jokeId.isNotEmpty())
+        {
+            TextField(value = jokeId, onValueChange = {jokeId=""})
+
+        }*/
+
+
+        ResetAndClearTextField()
+        val viewModel: ChuckViewModel = viewModel()
+        val chuckId: String by viewModel._chuckId.collectAsState()
+               TextField(
+                value = chuckId, onValueChange = { /*viewModel::coroutineGetChuck*/ },
+                readOnly = true
+            )
+
+    }
+
 
     private fun popUpUpdate(popupMenu: PopupMenu) {
 
@@ -182,11 +312,14 @@ class FirstFragment : Fragment(), CoroutineScope, ButtonClickListener, ItemClick
 
     private fun observeJoke() {
 
-        lifecycleScope.launchWhenCreated {
-            jokesViewModel._jokeId.collect { jokeId ->
-                binding.textviewFirst.text = jokeId
-            }
-        }
+
+
+
+        /* lifecycleScope.launchWhenCreated {
+             jokesViewModel._jokeId.collect { jokeId ->
+                 binding.textviewFirst.text = jokeId
+             }
+         }*/
 
         jokesViewModel.allJokes.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
@@ -208,18 +341,20 @@ class FirstFragment : Fragment(), CoroutineScope, ButtonClickListener, ItemClick
 
     private fun observeChuck() {
 
-        lifecycleScope.launchWhenCreated {
-            chuckViewModel._chuckId.collect { chuckId ->
-                binding.textviewFirst.text = chuckId
-            }
-        }
+            /* lifecycleScope.launchWhenCreated {
+                 chuckViewModel._chuckId.collect { chuckId ->
+                     binding.textviewFirst.text = chuckId
+
+
+                 }
+             }*/
 
         chuckViewModel.allChucks.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
                 recyclerChuckAdapter = RecyclerChuckAdapter(it, this, this)
                 binding.recyclerView.adapter = recyclerChuckAdapter
                 recyclerChuckAdapter.submitList(it)
-               /* binding.recyclerView.adapter = RecyclerChuckAdapter(it, this, this)*/
+                /* binding.recyclerView.adapter = RecyclerChuckAdapter(it, this, this)*/
 
             }
             .launchIn(lifecycleScope)
