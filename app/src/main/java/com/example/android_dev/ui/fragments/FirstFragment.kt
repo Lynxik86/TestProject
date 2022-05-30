@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.*
@@ -97,7 +98,10 @@ class FirstFragment : Fragment(), CoroutineScope, ButtonClickListener, ItemClick
             MdcTheme(context = requireContext()) {
                 ChuckObserveUpperView()
                 JokeObserveUpperView()
+            //    ResetAndClearTextField()
             }
+
+
         }
 
 
@@ -121,6 +125,7 @@ class FirstFragment : Fragment(), CoroutineScope, ButtonClickListener, ItemClick
         }
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
         binding.buttonAddChuck.setOnClickListener {
+
             chuckViewModel.coroutineGetChuck()
         }
 
@@ -146,16 +151,17 @@ class FirstFragment : Fragment(), CoroutineScope, ButtonClickListener, ItemClick
     @Composable
     private fun ChuckObserveUpperView() {
 
-        val chuckId by remember { mutableStateOf("") }
+        val viewModel: ChuckViewModel = viewModel()
+        val chuckId: String by viewModel._chuckId.collectAsState()
         Text(
             text = chuckId,
             fontSize = 12.sp,
-            color = Color.DarkGray,
+            color = Color.Blue,
             textAlign = TextAlign.Center,
             fontFamily = FontFamily.SansSerif,
-            modifier = Modifier.width(200.dp)
+            modifier = Modifier.width(150.dp)
         )
-       ChuckViewModelComposeView()
+
 
     /*    ClickableText(
             text = AnnotatedString("${chuckId}"),
@@ -175,41 +181,23 @@ class FirstFragment : Fragment(), CoroutineScope, ButtonClickListener, ItemClick
     @Composable
     private fun JokeObserveUpperView(){
 
-        val jokeId by remember { mutableStateOf("") }
-        Text(
-            text = jokeId,
-            fontSize = 12.sp,
-            color = Color.DarkGray,
-            textAlign = TextAlign.Center,
-            fontFamily = FontFamily.SansSerif,
-            modifier = Modifier.width(200.dp)
-        )
-        JokeViewModelComposeView()
-    }
-
-    @Composable
-    fun JokeViewModelComposeView()
-    {
-       /* var chuckId by remember { mutableStateOf("") }
-
-        if (chuckId.isNotEmpty())
-        {
-            TextField(value = chuckId, onValueChange = {chuckId=""})
-
-        }*/
-        ResetAndClearTextField()
+        //val jokeId by remember { mutableStateOf("") }
 
         val viewModel: JokeViewModel = viewModel()
-        //val jokeId by viewModel._jokeId.observeAsState("")
         val jokeId: String by viewModel._jokeId.collectAsState()
-        TextField(value = jokeId, onValueChange = { }, readOnly = true)
-
-
+        //val jokeId by viewModel._jokeId.observeAsState("")
+        Text(text = jokeId, fontSize = 12.sp,
+            color = Color.Blue,
+            textAlign = TextAlign.Center,
+            fontFamily = FontFamily.SansSerif,
+            modifier = Modifier.width(150.dp))
+        // ResetAndClearTextField()
     }
 
 
-    private @Composable
-    fun ResetAndClearTextField() {
+
+/*    @Composable
+    private fun ResetAndClearTextField() {
 
         var textFieldValue by remember { mutableStateOf(TextFieldValue("")) }
 
@@ -218,33 +206,9 @@ class FirstFragment : Fragment(), CoroutineScope, ButtonClickListener, ItemClick
             onValueChange = { newText ->
                 textFieldValue = newText}
         )
-    }
+    }*/
 
 
-
-
-
-    @Composable
-    fun ChuckViewModelComposeView() {
-
-      /*  var jokeId by remember { mutableStateOf("") }
-
-        if (jokeId.isNotEmpty())
-        {
-            TextField(value = jokeId, onValueChange = {jokeId=""})
-
-        }*/
-
-
-        ResetAndClearTextField()
-        val viewModel: ChuckViewModel = viewModel()
-        val chuckId: String by viewModel._chuckId.collectAsState()
-               TextField(
-                value = chuckId, onValueChange = { /*viewModel::coroutineGetChuck*/ },
-                readOnly = true
-            )
-
-    }
 
 
     private fun popUpUpdate(popupMenu: PopupMenu) {
