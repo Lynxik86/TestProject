@@ -4,16 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.Button
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -27,41 +31,31 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.android_dev.R
-import com.example.android_dev.databinding.FragmentFirstBinding
+import com.example.android_dev.databinding.JokeFragmentFirstBinding
 import com.example.android_dev.ui.recyclerview.ButtonClickListener
 import com.example.android_dev.ui.recyclerview.ItemClickListener
-import com.example.android_dev.ui.recyclerview.RecyclerChuckAdapter
 import com.example.android_dev.ui.recyclerview.RecyclerJokeAdapter
-import com.example.android_dev.viewmodel.ChuckViewModel
 import com.example.android_dev.viewmodel.JokeViewModel
 import com.google.android.material.composethemeadapter.MdcTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlin.coroutines.CoroutineContext
-import kotlinx.coroutines.Dispatchers as CoroutinesDispatchers
 
-
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
 @AndroidEntryPoint
-class FirstFragment : Fragment(), CoroutineScope, ButtonClickListener, ItemClickListener {
-    private var firstFragmentJob: Job? = null
-        get() {
-            if (field == null) {
-                field = Job()
-                field!!.start()
-            }
-            return field
-        }
+class JokeFirstFragment : Fragment(), /*CoroutineScope,*/ ButtonClickListener, ItemClickListener {
+    /* private var jokeFirstFragmentJob: Job? = null
+         get() {
+             if (field == null) {
+                 field = Job()
+                 field!!.start()
+             }
+             return field
+         }
 
-    override val coroutineContext: CoroutineContext
-        get() = CoroutinesDispatchers.Default + firstFragmentJob!!
+     override val coroutineContext: CoroutineContext
+         get() = Dispatchers.Default + jokeFirstFragmentJob!!*/
 
-    private var _binding: FragmentFirstBinding? = null
+    private var _binding: JokeFragmentFirstBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -73,18 +67,16 @@ class FirstFragment : Fragment(), CoroutineScope, ButtonClickListener, ItemClick
 
     ////////////////////////////////////////////////////////
     //Получение объекта  вью модели с использованием LiveData
-    private val chuckViewModel: ChuckViewModel by viewModels()
     private val jokesViewModel: JokeViewModel by viewModels()
 
     lateinit var recyclerJokeAdapter: RecyclerJokeAdapter
-    lateinit var recyclerChuckAdapter: RecyclerChuckAdapter
 
     //вызывается в момент создания View и в нём инится сам layout
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentFirstBinding.inflate(inflater, container, false)
+        _binding = JokeFragmentFirstBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -93,15 +85,19 @@ class FirstFragment : Fragment(), CoroutineScope, ButtonClickListener, ItemClick
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.textviewFirst.setContent {
-
+        binding.jokeTextviewFirst.setContent {
             MdcTheme(context = requireContext()) {
-                ChuckObserveUpperView()
-                JokeObserveUpperView()
-            //    ResetAndClearTextField()
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically, modifier = Modifier
+                        .padding(top = 8.dp) // adding some space to the label
+                        .background(color = Color.LightGray)
+                ) {
+                    JokeObserveUpperView()
+                    JokeDropDownMenu()
+                }
+
             }
-
-
         }
 
 
@@ -111,28 +107,22 @@ class FirstFragment : Fragment(), CoroutineScope, ButtonClickListener, ItemClick
 
         //////////////////////////////////////////////////////////////////////
 
-        val popupMenu = PopupMenu(requireContext(), binding.textviewFirst)
-        popupMenu.inflate(R.menu.pop_up_menu)
+        /*   val popupMenu = PopupMenu(requireContext(), binding.textviewFirst)
+           popupMenu.inflate(R.menu.pop_up_menu)*/
 
         setupRecyclerView()
 
         observeJoke()
-        observeChuck()
 
-        binding.textviewFirst.setOnClickListener {
-            popUpUpdate(popupMenu)
-            popupMenu.show()
-        }
+        /*   binding.textviewFirst.setOnClickListener {
+               popUpUpdate(popupMenu)
+               popupMenu.show()
+           }*/
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        binding.buttonAddChuck.setOnClickListener {
-
-            chuckViewModel.coroutineGetChuck()
-        }
-
-        binding.buttonAddJokes.setOnClickListener {
+        binding.jokeButtonAddJokes.setOnClickListener {
             jokesViewModel.coroutineGetJoke()
-        //////////////////////////////////////////////////////////////
-        //ДО переноса в рамки архитектуры MVVM
+            //////////////////////////////////////////////////////////////
+            //ДО переноса в рамки архитектуры MVVM
             //запуск новой сопрограммы в фоне
             //сопрограммы - это легковесные потоки. Они запускаются с помощью билдера сопрограмм launch в контексте некоторого CoroutineScope. В примере выше мы запускаем новую сопрограмму в GlobalScope.
             // Это означает, что время жизни новой сопрограммы ограничено только временем жизни всего приложения.
@@ -145,92 +135,72 @@ class FirstFragment : Fragment(), CoroutineScope, ButtonClickListener, ItemClick
                      }
                  }*/
         }
+        binding.jokeButtonAddChuck.setOnClickListener {
+            findNavController().navigate(R.id.action_JokeFirstFragment_to_ChuckFirstFragment)
+        }
     }
 
     @Preview
     @Composable
-    private fun ChuckObserveUpperView() {
+    private fun JokeDropDownMenu() {
+        var expanded by remember { mutableStateOf(false) }
 
-        val viewModel: ChuckViewModel = viewModel()
-        val chuckId: String by viewModel._chuckId.collectAsState()
-        Text(
-            text = chuckId,
-            fontSize = 12.sp,
-            color = Color.Blue,
-            textAlign = TextAlign.Center,
-            fontFamily = FontFamily.SansSerif,
-            modifier = Modifier.width(150.dp)
-        )
+        Box(modifier = Modifier.width(50.dp)) {
+            IconButton(onClick = { expanded = true }) {
+                Icon(Icons.Default.MoreVert, contentDescription = "Show Menu")
+            }
 
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                DropdownMenuItem(onClick = { deleteDBJoke() }) {
+                    Text(text = "Clear All History")
 
-    /*    ClickableText(
-            text = AnnotatedString("${chuckId}"),
+                }
+            }
 
-
-        onClick = { offset ->
-            val popupMenu = PopupMenu(requireContext(), binding.textviewFirst)
-            popupMenu.inflate(R.menu.pop_up_menu)
-            popUpUpdate(popupMenu)
-            popupMenu.show()
         }
 
-        )*/
     }
+
 
     @Preview
     @Composable
-    private fun JokeObserveUpperView(){
-
-        //val jokeId by remember { mutableStateOf("") }
+    private fun JokeObserveUpperView() {
 
         val viewModel: JokeViewModel = viewModel()
         val jokeId: String by viewModel._jokeId.collectAsState()
         //val jokeId by viewModel._jokeId.observeAsState("")
-        Text(text = jokeId, fontSize = 12.sp,
-            color = Color.Blue,
+        Text(
+            text = jokeId, fontSize = 16.sp,
+            color = Color.Gray,
             textAlign = TextAlign.Center,
             fontFamily = FontFamily.SansSerif,
-            modifier = Modifier.width(150.dp))
-        // ResetAndClearTextField()
-    }
-
-
-
-/*    @Composable
-    private fun ResetAndClearTextField() {
-
-        var textFieldValue by remember { mutableStateOf(TextFieldValue("")) }
-
-        TextField(
-            value = textFieldValue,
-            onValueChange = { newText ->
-                textFieldValue = newText}
+            modifier = Modifier.width(350.dp),
+            fontWeight = FontWeight.Bold,
         )
-    }*/
 
 
-
-
-    private fun popUpUpdate(popupMenu: PopupMenu) {
-
-        popupMenu.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.updateChuck -> {
-                    deleteDBChuck()
-                    true
-                }
-                R.id.updateJoke -> {
-                    deleteDBJoke()
-                    true
-                }
-                else -> false
-            }
-        }
     }
 
-    private fun deleteDBChuck() {
-        chuckViewModel.coroutineDeleteChuck()
-    }
+    /*   private fun popUpUpdate(popupMenu: PopupMenu) {
+
+           popupMenu.setOnMenuItemClickListener {
+               when (it.itemId) {
+                   R.id.updateChuck -> {
+                       deleteDBChuck()
+                       true
+                   }
+                   R.id.updateJoke -> {
+                       deleteDBJoke()
+                       true
+                   }
+                   else -> false
+               }
+           }
+       }*/
+
 
     private fun deleteDBJoke() {
         jokesViewModel.coroutineDeleteJokes()
@@ -243,7 +213,7 @@ class FirstFragment : Fragment(), CoroutineScope, ButtonClickListener, ItemClick
              )
              binding.recyclerView.layoutManager = linearLayoutManager*/
 
-        binding.recyclerView.apply {
+        binding.jokeRecyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
         }
     }
@@ -251,13 +221,10 @@ class FirstFragment : Fragment(), CoroutineScope, ButtonClickListener, ItemClick
     override fun onButtonClickListener(item: String) {
         //Toast.makeText(requireContext(),"Cell clicked", Toast.LENGTH_SHORT).show()
         deleteJokeResult(item)
-        deleteChuckResult(item)
     }
 
     override fun onItemClickListener(item: String) {
-
-        val action = FirstFragmentDirections.actionFirstFragmentToItemFragment(item)
-
+        val action = JokeFirstFragmentDirections.actionJokeFirstFragmentToItemFragment(item)
         findNavController().navigate(directions = action)
         // findNavController().navigate(R.id.action_FirstFragment_to_ItemFragment)
         /*val fr = parentFragmentManager.beginTransaction()
@@ -266,19 +233,11 @@ class FirstFragment : Fragment(), CoroutineScope, ButtonClickListener, ItemClick
         fr.commit()*/
     }
 
-    private fun deleteChuckResult(item: String) {
-        chuckViewModel.coroutineDeleteChuckResult(item)
-    }
-
     private fun deleteJokeResult(item: String) {
         jokesViewModel.coroutineDeleteJokeResult(item)
     }
 
     private fun observeJoke() {
-
-
-
-
         /* lifecycleScope.launchWhenCreated {
              jokesViewModel._jokeId.collect { jokeId ->
                  binding.textviewFirst.text = jokeId
@@ -289,12 +248,13 @@ class FirstFragment : Fragment(), CoroutineScope, ButtonClickListener, ItemClick
             .onEach {
                 //  binding.recyclerView.adapter = RecyclerJokeAdapter(it, this, this)
                 recyclerJokeAdapter = RecyclerJokeAdapter(it, this, this)
-                binding.recyclerView.adapter = recyclerJokeAdapter
+                binding.jokeRecyclerView.adapter = recyclerJokeAdapter
                 recyclerJokeAdapter.submitList(it)
             }
             .launchIn(lifecycleScope)
     }
-
+    ////////////////////////////////////////////////////////////////////
+    //Observe Live Data
     /* jokesViewModel._jokeId.observe(viewLifecycleOwner) { jokeId ->
           binding.textviewFirst.text = jokeId
       }
@@ -303,44 +263,10 @@ class FirstFragment : Fragment(), CoroutineScope, ButtonClickListener, ItemClick
             binding.recyclerView.adapter = RecyclerJokeAdapter(jokes, this, this)
     }*/
 
-    private fun observeChuck() {
-
-            /* lifecycleScope.launchWhenCreated {
-                 chuckViewModel._chuckId.collect { chuckId ->
-                     binding.textviewFirst.text = chuckId
-
-
-                 }
-             }*/
-
-        chuckViewModel.allChucks.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-            .onEach {
-                recyclerChuckAdapter = RecyclerChuckAdapter(it, this, this)
-                binding.recyclerView.adapter = recyclerChuckAdapter
-                recyclerChuckAdapter.submitList(it)
-                /* binding.recyclerView.adapter = RecyclerChuckAdapter(it, this, this)*/
-
-            }
-            .launchIn(lifecycleScope)
-
-        /*chuckViewModel._chuckId.observe(viewLifecycleOwner) { chuckId ->
-            binding.textviewFirst.text = chuckId
-        }
-
-        chuckViewModel.allChucks.observe(viewLifecycleOwner) { chucks ->
-            // Data bind the recycler view
-            binding.recyclerView.adapter = RecyclerChuckAdapter(chucks, this, this)
-        }*/
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
-        firstFragmentJob?.cancel()
-        firstFragmentJob = null
+        /*  jokeFirstFragmentJob?.cancel()
+          jokeFirstFragmentJob = null*/
         _binding = null
-
     }
-
 }
-
-

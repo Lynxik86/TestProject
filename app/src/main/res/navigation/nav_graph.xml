@@ -12,31 +12,54 @@
         tools:layout="@layout/fragment_second">
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_SecondFragment_to_ChuckFirstFragment"
+            app:destination="@id/ChuckFirstFragment" />
         <action
             android:id="@+id/action_SecondFragment_to_ThirdFragment"
             app:destination="@id/ThirdFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.example.android_dev.ui.fragments.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        android:id="@+id/ChuckFirstFragment"
+        android:name="com.example.android_dev.ui.fragments.ChuckFirstFragment"
+        android:label="Chuck First Fragment"
+        tools:layout="@layout/chuck_fragment_first">
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
+            android:id="@+id/action_ChuckFirstFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
         <action
-            android:id="@+id/action_FirstFragment_to_ItemFragment"
+            android:id="@+id/action_ChuckFirstFragment_to_ItemFragment"
             app:destination="@id/ItemFragment">
             <argument
                 android:name="item"
                 android:defaultValue="joke"
                 app:argType="string" />
         </action>
+        <action
+            android:id="@+id/action_ChuckFirstFragment_to_JokeFirstFragment"
+            app:destination="@id/JokeFirstFragment" />
     </fragment>
 
+    <fragment
+        android:id="@+id/JokeFirstFragment"
+        android:name="com.example.android_dev.ui.fragments.JokeFirstFragment"
+        android:label="Joke First Fragment"
+        tools:layout="@layout/joke_fragment_first">
+        <action
+            android:id="@+id/action_JokeFirstFragment_to_SecondFragment"
+            app:destination="@id/SecondFragment" />
+        <action
+            android:id="@+id/action_JokeFirstFragment_to_ItemFragment"
+            app:destination="@id/ItemFragment">
+            <argument
+                android:name="item"
+                android:defaultValue="joke"
+                app:argType="string" />
+        </action>
+        <action
+            android:id="@+id/action_JokeFirstFragment_to_ChuckFirstFragment"
+            app:destination="@id/ChuckFirstFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/ThirdFragment"
@@ -55,12 +78,12 @@
         android:label="item_fragment"
         tools:layout="@layout/fragment_item">
         <action
-            android:id="@+id/action_ItemFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment">
-           <!-- <argument
-                android:name="item"
-                android:defaultValue="joke"
-                app:argType="string" />-->
+            android:id="@+id/action_ItemFragment_to_ChuckFirstFragment"
+            app:destination="@id/ChuckFirstFragment">
+        </action>
+        <action
+            android:id="@+id/action_ItemFragment_to_JokeFirstFragment"
+            app:destination="@id/JokeFirstFragment">
         </action>
     </fragment>
 

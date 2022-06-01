@@ -57,7 +57,7 @@ class SecondFragment : Fragment() {
         registryViewModel.successfulLogin.observe(viewLifecycleOwner) { loggedIn ->
             if (loggedIn) {
                 registryViewModel.loginComplete()
-                findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+                findNavController().navigate(R.id.action_SecondFragment_to_ChuckFirstFragment)
             }
         }
 

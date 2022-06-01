@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/fr1"
-    tools:context=".ui.fragments.FirstFragment">
+    tools:context=".ui.fragments.ChuckFirstFragment">
 
 <!--    <TextView
         android:id="@+id/textview_first"
@@ -20,49 +20,49 @@
         app:layout_constraintTop_toTopOf="parent" />-->
 
     <androidx.compose.ui.platform.ComposeView
-        android:id="@+id/textview_first"
+        android:id="@+id/chuck_textview_first"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toTopOf="@id/recycler_view"
+        app:layout_constraintBottom_toTopOf="@id/chuck_recycler_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+        android:id="@+id/chuck_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:scrollbars="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/buttonAddJokes"
+        app:layout_constraintBottom_toTopOf="@id/chuck_buttonAddJokes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textview_first"
+        app:layout_constraintTop_toBottomOf="@id/chuck_textview_first"
         tools:listitem="@layout/item_jokes" />
 
     <Button
-        android:id="@+id/buttonAddJokes"
+        android:id="@+id/chuck_buttonAddJokes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:text="@string/dad_jokes"
-        app:layout_constraintTop_toBottomOf="@+id/recycler_view"
-        app:layout_constraintBottom_toTopOf="@id/buttonAddChuck"
+        app:layout_constraintTop_toBottomOf="@+id/chuck_recycler_view"
+        app:layout_constraintBottom_toTopOf="@id/chuck_buttonAddChuck"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         />
 
     <Button
-        android:id="@+id/buttonAddChuck"
+        android:id="@+id/chuck_buttonAddChuck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:text="@string/chuck_norris_facts"
-        app:layout_constraintTop_toBottomOf="@+id/buttonAddJokes"
+        app:layout_constraintTop_toBottomOf="@+id/chuck_buttonAddJokes"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
