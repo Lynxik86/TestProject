@@ -4,11 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
@@ -41,6 +40,7 @@ import com.google.android.material.composethemeadapter.MdcTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -93,15 +93,39 @@ class ChuckFirstFragment : Fragment(),/* CoroutineScope,*/ ButtonClickListener, 
 
         binding.chuckTextviewFirst.setContent {
             MdcTheme(context = requireContext()) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically, modifier = Modifier
-                        .padding(top = 8.dp) // adding some space to the label
-                        .background(color = LightGray)
-                ) {
-                    ChuckObserveUpperView()
-                    ChuckDropDownMenu()
-                }
+                Column {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically, modifier = Modifier
+                            .padding(top = 8.dp) // adding some space to the label
+                            .background(color = LightGray)
+                    ) {
+                        ChuckObserveUpperView()
+                        ChuckDropDownMenu()
+                    }
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically, modifier = Modifier
+                            .padding(top = 15.dp) // adding some space to the label
 
+                    ) {
+
+
+                    }
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.Top,
+                        horizontalArrangement = Arrangement.SpaceBetween
+
+
+                    ) {
+                       // Column {
+                            ChuckButtonAddChuck()
+                            ChuckButtonAddJokes()
+                            Spacer(Modifier.width(50.0.dp))
+                      //  }
+                    }
+
+                }
             }
         }
 
@@ -112,22 +136,25 @@ class ChuckFirstFragment : Fragment(),/* CoroutineScope,*/ ButtonClickListener, 
         //////////////////////////////////////////////////////////////////////
         /* val popupMenu = PopupMenu(requireContext(), binding.textviewFirst)
          popupMenu.inflate(R.menu.pop_up_menu)*/
-
-        setupRecyclerView()
-        observeChuck()
-
         /*binding.textviewFirst.setOnClickListener {
-            popUpUpdate(popupMenu)
-            popupMenu.show()
-        }*/
-        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        binding.chuckButtonAddChuck.setOnClickListener {
-            chuckViewModel.coroutineGetChuck()
-        }
-        binding.chuckButtonAddJokes.setOnClickListener {
-            findNavController().navigate(R.id.action_ChuckFirstFragment_to_JokeFirstFragment)
-        }
+               popUpUpdate(popupMenu)
+               popupMenu.show()
+           }*/
 
+        /////////////////////////////////////////////////////////////////////
+        //RececlerView on Flow
+        /*  setupRecyclerView()
+        observeChuck()*/
+
+
+        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
+        /* binding.chuckButtonAddChuck.setOnClickListener {
+             chuckViewModel.coroutineGetChuck()
+         }
+         binding.chuckButtonAddJokes.setOnClickListener {
+             findNavController().navigate(R.id.action_ChuckFirstFragment_to_JokeFirstFragment)
+         }
+ */
     }
 
     @Preview
@@ -190,21 +217,60 @@ class ChuckFirstFragment : Fragment(),/* CoroutineScope,*/ ButtonClickListener, 
            }
        }*/
 
+    @Composable
+    fun ChuckButtonAddChuck() {
+        OutlinedButton(
+
+
+            onClick = {
+                chuckViewModel.coroutineGetChuck()
+
+            }, colors = ButtonDefaults.textButtonColors(
+                backgroundColor = Color.Gray
+            )
+        )
+
+        {
+            Text("Chuck Norris facts")
+        }
+    }
+
+    @Composable
+    fun ChuckButtonAddJokes() {
+
+        OutlinedButton(
+            onClick = { findNavController().navigate(R.id.action_ChuckFirstFragment_to_JokeFirstFragment) },
+            modifier = Modifier.size(50.dp),  //avoid the oval shape
+
+            // закругленные углы
+            shape = RoundedCornerShape(8.dp),
+            elevation = ButtonDefaults.elevation(),
+
+            border = BorderStroke(1.dp, Color.Blue),
+            contentPadding = PaddingValues(3.dp),
+            colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Blue)
+        )
+
+        {
+            Text("Dad jokes")
+        }
+    }
+
     private fun deleteDBChuck() {
         chuckViewModel.coroutineDeleteChuck()
     }
 
-    private fun setupRecyclerView() {
+ /*   private fun setupRecyclerView() {
         // Specify layout for recycler view
-        /*     val linearLayoutManager = LinearLayoutManager(
+        *//*     val linearLayoutManager = LinearLayoutManager(
                  requireContext(), RecyclerView.VERTICAL, false
              )
-             binding.recyclerView.layoutManager = linearLayoutManager*/
+             binding.recyclerView.layoutManager = linearLayoutManager*//*
 
         binding.chuckRecyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
         }
-    }
+    }*/
 
     override fun onButtonClickListener(item: String) {
         deleteChuckResult(item)

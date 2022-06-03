@@ -20,17 +20,17 @@
             app:layout_constraintTop_toTopOf="parent" />-->
 
     <androidx.compose.ui.platform.ComposeView
-        android:id="@+id/joke_textview_first"
+        android:id="@+id/joke_fragment_first"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toTopOf="@id/joke_recycler_view"
+
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 
-    <androidx.recyclerview.widget.RecyclerView
+    <!--<androidx.recyclerview.widget.RecyclerView
         android:id="@+id/joke_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -66,5 +66,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        />
+        />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

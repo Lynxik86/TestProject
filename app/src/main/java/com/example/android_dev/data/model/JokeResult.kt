@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class JokeResult(
     @PrimaryKey
     val id: String,
-    val joke: String,
+    var joke: String,
     val status: Int,
 
-)
+    )
